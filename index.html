@@ -1,0 +1,57 @@
+<<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="hero">
+      <div class="form-box">
+        <div class="button-box">
+          <div id="btn">
+
+          </div>
+          <button type="button" class="toggle-btn" onclick="login()">Log In</button>
+          <button type="button" class="toggle-btn" onclick="signup()">Sign Up</button>
+        </div>
+        <div class="social-icons">
+          <img src="google-plus.png">
+          <img src="linkedin.png">
+          <img src="facebook.png">
+        </div>
+        <form id="login" class="input-group">
+          <input type="text" class="input-field" placeholder="Email" required>
+          <input type="text" class="input-field" placeholder="Enter Password" required>
+          <input type="checkbox" class="check-box"><span>Remember Me</span>
+          <button type="submit" class="submit-btn">Log In</button>
+        </form>
+        <form id="signup" class="input-group">
+          <input type="text" class="input-field" placeholder="Name" required>
+          <input type="text" class="input-field" placeholder="Surname" required>
+          <input type="email" class="input-field" placeholder="Email" required>
+          <input type="text" class="input-field" placeholder="Create Password" required>
+          <input type="text" class="input-field" placeholder="Repeat Password" required>
+          <input type="checkbox" class="check-box"><span>I agree to the terms & conditions</span>
+          <button type="submit" class="submit-btn">Sign Up</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      var a = document.getElementById("login");
+      var b = document.getElementById("signup");
+      var c = document.getElementById("btn");
+
+      function signup(){
+        a.style.left = "-400px";
+        b.style.left = "50px";
+        c.style.left = "110x";
+      }
+      function login(){
+        a.style.left = "50px";
+        b.style.left = "450px";
+        c.style.left = "0";
+      }
+    </script>
+  </body>
+</html>
