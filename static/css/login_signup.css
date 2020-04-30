@@ -7,6 +7,7 @@ body {
     height: 100%;
     font-family: "Roboto", sans-serif;
     background: url("/static/img/app/bg.jpg");
+    background-repeat: no-repeat;
     overflow: hidden;
 }
 
@@ -57,11 +58,14 @@ body {
 }
 
 .btn,
-input {
+input,
+select {
     padding: 10px 15px;
 }
 
-input {
+input,
+select,
+p {
     margin: 0 auto 15px;
     display: block;
     width: 220px;

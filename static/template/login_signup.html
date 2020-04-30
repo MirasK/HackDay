@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
     <link rel="stylesheet" href="/static/css/login_signup.css">
     <title>sign-up\in</title>
 </head>
@@ -17,24 +18,16 @@
                 <div class="info-item">
                     <div class="table">
                         <div class="table-cell">
-                            <p>
-                                One of Us?)
-                            </p>
-                            <button class="info-btn">
-                Log In
-              </button>
+                            <p>One of Us?)</p>
+                            <button class="info-btn">Log In</button>
                         </div>
                     </div>
                 </div>
                 <div class="info-item">
                     <div class="table">
                         <div class="table-cell">
-                            <p>
-                                Join Us!)
-                            </p>
-                            <button class="info-btn">
-                Sign Up
-              </button>
+                            <p>Join Us!)</p>
+                            <button class="info-btn">Sign Up</button>
                         </div>
                     </div>
                 </div>
@@ -43,24 +36,31 @@
                 <div class="form-item log-in">
                     <div class="table">
                         <div class="table-cell">
-                            <input name="email" placeholder="Email" type="text" />
-                            <input name="Password" placeholder="Password" type="Password" />
-                            <button class="btn">
-                Log In
-              </button>
+                            <form class="form" action="/" method="POST">
+                                <input type="hidden" name="sign" value="in">
+                                <input name="email" required placeholder="Email" type="text" />
+                                <input name="password" required placeholder="Password" type="password" />
+                                <input type="submit" value="Log In" class="btn" />
+                            </form>
                         </div>
                     </div>
                 </div>
                 <div class="form-item sign-up">
                     <div class="table">
                         <div class="table-cell">
-                            <input name="email" placeholder="Email" type="text" />
-                            <input name="fullName" placeholder="Full Name" type="text" />
-                            <input name="Password" placeholder="Create Password" type="Password" />
-                            <input name="Password" placeholder="Repeat Password" type="Password" />
-                            <button class="btn">
-                Sign Up
-              </button>
+                            <form class="form" action="/" method="POST">
+                                <input type="hidden" name="sign" value="up">
+                                <input name="email" required placeholder="Email" type="email" />
+                                <input name="username" required placeholder="Full Name" type="text" />
+                                <input name="password" required placeholder="Create Password" type="password" />
+                                <input name="repPassword" required placeholder="Repeat Password" type="password" />
+                                <p>Role</p>
+                                <select name="role">
+                                    <option value="student">Student</option>
+                                    <option value="employer">Employer</option>
+                                </select>
+                                <input type="submit" value="Sign Up" class="btn" />
+                            </form>
                         </div>
                     </div>
                 </div>

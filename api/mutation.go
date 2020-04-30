@@ -1,6 +1,8 @@
 package api
 
 import (
+	"hackday/db"
+
 	"github.com/graphql-go/graphql"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -25,8 +27,7 @@ var mutationType = graphql.NewObject(
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					id, e := create(client.Database("HHCustom").Collection("MedCards"),
-						bson.M{"bloodGroup": p.Args["bloodGroup"], "ills": p.Args["ills"], "phobies": p.Args["phobies"]})
+					id, e := db.Create(db.GetMedCardsColl(), bson.M{"bloodGroup": p.Args["bloodGroup"], "ills": p.Args["ills"], "phobies": p.Args["phobies"]})
 					if e != nil {
 						return nil, e
 					}
@@ -59,9 +60,8 @@ var mutationType = graphql.NewObject(
 					if e != nil {
 						return nil, e
 					}
-					id, e := create(client.Database("HHCustom").Collection("Msgs"),
-						bson.M{"type": p.Args["type"], "status": p.Args["status"], "text": p.Args["text"],
-							"ownerId": IDO, "senderId": IDS})
+					id, e := db.Create(db.GetMsgsColl(), bson.M{"type": p.Args["type"], "status": p.Args["status"], "text": p.Args["text"],
+						"ownerId": IDO, "senderId": IDS})
 					if e != nil {
 						return nil, e
 					}
@@ -90,9 +90,8 @@ var mutationType = graphql.NewObject(
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					id, e := create(client.Database("HHCustom").Collection("Resumes"),
-						bson.M{"skills": p.Args["skills"], "whereWorks": p.Args["whereWorks"], "aboutMe": p.Args["aboutMe"],
-							"date": p.Args["date"], "link": p.Args["link"]})
+					id, e := db.Create(db.GetResumesColl(), bson.M{"skills": p.Args["skills"], "whereWorks": p.Args["whereWorks"], "aboutMe": p.Args["aboutMe"],
+						"date": p.Args["date"], "link": p.Args["link"]})
 					if e != nil {
 						return nil, e
 					}
@@ -112,8 +111,7 @@ var mutationType = graphql.NewObject(
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					id, e := create(client.Database("HHCustom").Collection("Sessions"),
-						bson.M{"filename": p.Args["filename"], "expire": p.Args["expire"]})
+					id, e := db.Create(db.GetSessColl(), bson.M{"filename": p.Args["filename"], "expire": p.Args["expire"]})
 					if e != nil {
 						return nil, e
 					}
@@ -140,9 +138,7 @@ var mutationType = graphql.NewObject(
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					IDM, _ := primitive.ObjectIDFromHex(p.Args["medId"].(string))
 					IDR, _ := primitive.ObjectIDFromHex(p.Args["resumeId"].(string))
-					id, e := create(client.Database("HHCustom").Collection("StudentInfos"),
-						bson.M{"medId": IDM, "resumeId": IDR,
-							"sertificates": p.Args["sertificates"], "achievs": p.Args["achievs"]})
+					id, e := db.Create(db.GetStudInfosColl(), bson.M{"medId": IDM, "resumeId": IDR, "sertificates": p.Args["sertificates"], "achievs": p.Args["achievs"]})
 					if e != nil {
 						return nil, e
 					}
@@ -177,10 +173,9 @@ var mutationType = graphql.NewObject(
 					},
 				},
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					id, e := create(client.Database("HHCustom").Collection("Works"),
-						bson.M{"date": p.Args["date"], "company": p.Args["company"],
-							"info": p.Args["info"], "requirements": p.Args["requirements"],
-							"type": p.Args["type"], "phone": p.Args["phone"], "email": p.Args["email"]})
+					id, e := db.Create(db.GetWorksColl(), bson.M{"date": p.Args["date"], "company": p.Args["company"],
+						"info": p.Args["info"], "requirements": p.Args["requirements"],
+						"type": p.Args["type"], "phone": p.Args["phone"], "email": p.Args["email"]})
 					if e != nil {
 						return nil, e
 					}
@@ -221,11 +216,10 @@ var mutationType = graphql.NewObject(
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					IDUI, _ := primitive.ObjectIDFromHex(p.Args["userInfoId"].(string))
 					IDS, _ := primitive.ObjectIDFromHex(p.Args["sesId"].(string))
-					id, e := create(client.Database("HHCustom").Collection("Users"),
-						bson.M{"dob": p.Args["dob"], "username": p.Args["username"],
-							"email": p.Args["email"], "photo": p.Args["photo"],
-							"phone": p.Args["phone"], "role": p.Args["role"],
-							"userInfoId": IDUI, "sesId": IDS})
+					id, e := db.Create(db.GetUsersColl(), bson.M{"dob": p.Args["dob"], "username": p.Args["username"],
+						"email": p.Args["email"], "photo": p.Args["photo"],
+						"phone": p.Args["phone"], "role": p.Args["role"],
+						"userInfoId": IDUI, "sesId": IDS})
 					if e != nil {
 						return nil, e
 					}
@@ -238,7 +232,7 @@ var mutationType = graphql.NewObject(
 
 			"updateMedCard": &graphql.Field{
 				Type:        MedCardType,
-				Description: "update MedCard",
+				Description: "db.Update MedCard",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -271,7 +265,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("MedCards"), filter, send)
+						e = db.Update(db.GetMedCardsColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -283,7 +277,7 @@ var mutationType = graphql.NewObject(
 			},
 			"updateMsg": &graphql.Field{
 				Type:        MsgType,
-				Description: "update Msg",
+				Description: "db.Update Msg",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -304,7 +298,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("Msgs"), filter, send)
+						e = db.Update(db.GetMsgsColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -316,7 +310,7 @@ var mutationType = graphql.NewObject(
 			},
 			"updateResume": &graphql.Field{
 				Type:        ResumeType,
-				Description: "update Resume",
+				Description: "db.Update Resume",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -361,7 +355,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("Resumes"), filter, send)
+						e = db.Update(db.GetResumesColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -373,7 +367,7 @@ var mutationType = graphql.NewObject(
 			},
 			"updateSession": &graphql.Field{
 				Type:        SessionType,
-				Description: "update Session",
+				Description: "db.Update Session",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -394,7 +388,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("Sessions"), filter, send)
+						e = db.Update(db.GetSessColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -406,7 +400,7 @@ var mutationType = graphql.NewObject(
 			},
 			"updateUserInfo": &graphql.Field{
 				Type:        UserInfoType,
-				Description: "update StudentInfo",
+				Description: "db.Update StudentInfo",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -445,7 +439,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("StudentInfos"), filter, send)
+						e = db.Update(db.GetStudInfosColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -457,7 +451,7 @@ var mutationType = graphql.NewObject(
 			},
 			"updateUser": &graphql.Field{
 				Type:        UserType,
-				Description: "update Users",
+				Description: "db.Update Users",
 				Args: graphql.FieldConfigArgument{
 					"id": &graphql.ArgumentConfig{
 						Type: graphql.NewNonNull(graphql.ID),
@@ -520,7 +514,7 @@ var mutationType = graphql.NewObject(
 					}
 					send := bson.D{{Key: "$set", Value: data}}
 					if len(data) != 0 {
-						e = update(client.Database("HHCustom").Collection("Users"), filter, send)
+						e = db.Update(db.GetUsersColl(), filter, send)
 						if e != nil {
 							return nil, e
 						}
@@ -545,7 +539,7 @@ var mutationType = graphql.NewObject(
 					if e != nil {
 						return nil, e
 					}
-					e = delete(client.Database("HHCustom").Collection("Msgs"), filter)
+					e = db.Delete(db.GetMsgsColl(), filter)
 					if e != nil {
 						return nil, e
 					}
@@ -566,7 +560,7 @@ var mutationType = graphql.NewObject(
 					if e != nil {
 						return nil, e
 					}
-					e = delete(client.Database("HHCustom").Collection("Sessions"), filter)
+					e = db.Delete(db.GetSessColl(), filter)
 					if e != nil {
 						return nil, e
 					}
@@ -587,7 +581,7 @@ var mutationType = graphql.NewObject(
 					if e != nil {
 						return nil, e
 					}
-					e = delete(client.Database("HHCustom").Collection("Works"), filter)
+					e = db.Delete(db.GetWorksColl(), filter)
 					if e != nil {
 						return nil, e
 					}

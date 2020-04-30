@@ -5,56 +5,53 @@ import (
 	"fmt"
 	"hackday/api"
 	"hackday/app"
-	"hackday/db"
 	"net/http"
 	"os"
 )
 
-var defaultPort = "8080"
-
 func main() {
+	defaultPort := "8080"
 	port := os.Getenv("PORT")
 	host := "http://localhost"
 	if host == "http://localhost" {
 		port = defaultPort
 	}
-	client, e := db.Conn()
-	if e != nil {
-		panic(e)
-	}
 
+	e := app.InitProg()
+	if e != nil {
+		app.WriteLog(e.Error())
+		return
+	}
+	// check sessions expire per minute
+	go app.CheckPerMin()
+
+	mux := http.NewServeMux()
 	// static files define
 	static := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", static))
+	mux.Handle("/static/", http.StripPrefix("/static/", static))
 
 	// api on graphql
-	api.SetClient(client)
-	http.HandleFunc("/auth", api.CreateTokenEndpoint)
-	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/auth", api.CreateTokenEndpoint)
+	mux.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
 		result := api.ExecuteQuery(r.URL.Query().Get("query"), api.APISchema, r.URL.Query().Get("token"))
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(result)
 	})
 
-	// app on graphql
-	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
-		result := api.ExecuteQuery(r.URL.Query().Get("query"), api.AppSchema, r.URL.Query().Get("token"))
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(result)
-	})
-
 	// app hanlders
-	http.HandleFunc("/", app.Hsign)
-	http.HandleFunc("/profile", app.Hprofile)
-	http.HandleFunc("/verification", app.Hverification)
-	http.HandleFunc("/contact", app.Hcontact)
-
-	// check sessions expire per minute
-	// go forum.CheckPerMin()
+	mux.HandleFunc("/", app.Hsign)
+	mux.HandleFunc("/forgot", app.Hcontact)
+	mux.HandleFunc("/logout", app.Hlogout)
+	mux.HandleFunc("/profile", app.Hprofile)
+	mux.HandleFunc("/profile/settings", app.Hsettings)
+	mux.HandleFunc("/verification", app.Hverification)
+	mux.HandleFunc("/contact", app.Hcontact)
 
 	fmt.Println("listening on: " + host + ":" + port)
-	e = http.ListenAndServe(":"+port, nil)
+	app.WriteLog("listening on: " + host + ":" + port)
+	e = http.ListenAndServe(":"+port, mux)
 	if e != nil {
-		panic(e)
+		app.WriteLog(e.Error())
+		return
 	}
 }

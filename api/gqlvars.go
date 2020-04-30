@@ -1,7 +1,10 @@
 package api
 
 import (
+	"hackday/db"
+
 	"github.com/graphql-go/graphql"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -181,8 +184,7 @@ var (
 					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 						id, ok := p.Source.(primitive.M)[p.Info.FieldName]
 						if ok && id != "null" {
-							collection := client.Database("HHCustom").Collection("StudentInfos")
-							res, e := queryGetByID(collection, id)
+							res, e := db.GetOneByFilter(db.GetStudInfosColl(), bson.M{"_id": id})
 							if e != nil {
 								return nil, e
 							}
@@ -196,8 +198,7 @@ var (
 					Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 						id, ok := p.Source.(primitive.M)[p.Info.FieldName]
 						if ok && id != "null" {
-							collection := client.Database("HHCustom").Collection("Sessions")
-							res, e := queryGetByID(collection, id)
+							res, e := db.GetOneByFilter(db.GetSessColl(), bson.M{"_id": id})
 							if e != nil {
 								return nil, e
 							}

@@ -3,7 +3,10 @@ package api
 import (
 	"log"
 
+	"hackday/db"
+
 	"github.com/graphql-go/graphql"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -27,8 +30,7 @@ var queryType = graphql.NewObject(
 						return nil, e
 					}
 					if ok {
-						collection := client.Database("HHCustom").Collection("Msgs")
-						res, e := queryGetByID(collection, ID)
+						res, e := db.GetOneByFilter(db.GetMsgsColl(), bson.M{"_id": ID})
 						if e != nil {
 							return nil, e
 						}
@@ -41,8 +43,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(MsgType),
 				Description: "Get message list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					collection := client.Database("HHCustom").Collection("Msgs")
-					arr, e := queryGetAll(collection)
+					arr, e := db.GetAllByFilter(db.GetMsgsColl(), bson.M{})
 					if e != nil {
 						return nil, e
 					}
@@ -64,8 +65,7 @@ var queryType = graphql.NewObject(
 						return nil, e
 					}
 					if ok {
-						collection := client.Database("HHCustom").Collection("Works")
-						res, e := queryGetByID(collection, ID)
+						res, e := db.GetOneByFilter(db.GetWorksColl(), bson.M{"_id": ID})
 						if e != nil {
 							return nil, e
 						}
@@ -79,8 +79,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(WorkType),
 				Description: "Get works list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					collection := client.Database("HHCustom").Collection("Works")
-					arr, e := queryGetAll(collection)
+					arr, e := db.GetAllByFilter(db.GetWorksColl(), bson.M{})
 					if e != nil {
 						return nil, e
 					}
@@ -102,8 +101,7 @@ var queryType = graphql.NewObject(
 						return nil, e
 					}
 					if ok {
-						collection := client.Database("HHCustom").Collection("Users")
-						res, e := queryGetByID(collection, ID)
+						res, e := db.GetOneByFilter(db.GetUsersColl(), bson.M{"_id": ID})
 						if e != nil {
 							return nil, e
 						}
@@ -116,8 +114,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(UserType),
 				Description: "Get users list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					collection := client.Database("HHCustom").Collection("Users")
-					arr, e := queryGetAll(collection)
+					arr, e := db.GetAllByFilter(db.GetUsersColl(), bson.M{})
 					if e != nil {
 						log.Fatal(e)
 						return nil, e
@@ -140,8 +137,7 @@ var queryType = graphql.NewObject(
 						return nil, e
 					}
 					if ok {
-						collection := client.Database("HHCustom").Collection("MedCards")
-						res, e := queryGetByID(collection, ID)
+						res, e := db.GetOneByFilter(db.GetMedCardsColl(), bson.M{"_id": ID})
 						if e != nil {
 							return nil, e
 						}
@@ -154,8 +150,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(MedCardType),
 				Description: "Get medcards list",
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-					collection := client.Database("HHCustom").Collection("MedCards")
-					arr, e := queryGetAll(collection)
+					arr, e := db.GetAllByFilter(db.GetMedCardsColl(), bson.M{})
 					if e != nil {
 						return nil, e
 					}
@@ -177,8 +172,7 @@ var queryType = graphql.NewObject(
 						return nil, e
 					}
 					if ok {
-						collection := client.Database("HHCustom").Collection("Resumes")
-						res, e := queryGetByID(collection, ID)
+						res, e := db.GetOneByFilter(db.GetResumesColl(), bson.M{"_id": ID})
 						if e != nil {
 							return nil, e
 						}
@@ -191,8 +185,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(ResumeType),
 				Description: "Get resumes list",
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-					collection := client.Database("HHCustom").Collection("Resumes")
-					arr, e := queryGetAll(collection)
+					arr, e := db.GetAllByFilter(db.GetResumesColl(), bson.M{})
 					if e != nil {
 						return nil, e
 					}
