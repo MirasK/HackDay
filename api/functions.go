@@ -6,10 +6,10 @@ import (
 	"hackday/app"
 	"hackday/db"
 	"net/http"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/graphql-go/graphql"
-	"github.com/mitchellh/mapstructure"
 	"go.mongodb.org/mongo-driver/bson"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -27,9 +27,12 @@ var APISchema, _ = graphql.NewSchema(
 
 // ExecuteQuery ...
 func ExecuteQuery(query string, schema graphql.Schema, token string) *graphql.Result {
-	_, e := ValidateJWT(token)
-	if e != nil {
+	if token == "" {
 		return &graphql.Result{Data: "authorize before\nsend auth 'email' and 'password' to /auth?email=email&password=password"}
+	}
+	e := ValidateJWT(token)
+	if e != nil {
+		return &graphql.Result{Data: e.Error()}
 	}
 
 	result := graphql.Do(graphql.Params{
@@ -56,9 +59,10 @@ func CreateTokenEndpoint(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{ "error": "` + e.Error() + `" }`))
 		return
 	}
+	timeEx := app.TimeExpire(1 * time.Hour)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": email,
-		"password": pass,
+		"email":  email,
+		"expire": timeEx,
 	})
 	tokenString, e := token.SignedString(jwtSecret)
 	if e != nil {
@@ -66,13 +70,18 @@ func CreateTokenEndpoint(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`{ "error": "` + e.Error() + `" }`))
 		return
 	}
-	w.Write([]byte(`{ "token": "` + tokenString + `" }`))
+	_, e = db.Create(db.GetTokenColl(), bson.M{"token": tokenString, "expire": timeEx})
+	if e != nil {
+		w.Write([]byte(`{ "error": "` + e.Error() + `" }`))
+		return
+	}
+	w.Write([]byte(`{ "token": "` + tokenString + `", "expiration time": "` + timeEx + `" }`))
 }
 
 // ValidateJWT check token
-func ValidateJWT(t string) (interface{}, error) {
+func ValidateJWT(t string) error {
 	if t == "" {
-		return nil, errors.New("Authorization token must be present")
+		return errors.New("Authorization token must be present")
 	}
 	token, _ := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -80,11 +89,13 @@ func ValidateJWT(t string) (interface{}, error) {
 		}
 		return jwtSecret, nil
 	})
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		var decodedToken interface{}
-		mapstructure.Decode(claims, &decodedToken)
-		return decodedToken, nil
+	if !token.Valid {
+		return fmt.Errorf("invalid token")
 	}
-	return nil, errors.New("Invalid authorization token")
 
+	expire, ok := token.Claims.(jwt.MapClaims)["expire"]
+	if ok && app.TimeExpire(time.Nanosecond) > expire.(string) {
+		return errors.New("token is not valid more")
+	}
+	return nil
 }

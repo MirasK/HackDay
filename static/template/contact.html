@@ -11,21 +11,25 @@
 
 <body>
     <div class="contact-form">
-        <h1>Contact Us!)</h1>
-        <div class="txtb">
-            <label>Your Full Name:</label>
-            <input type="text" name="" value="" placeholder="Enter Your Name">
-        </div>
-        <div class="txtb">
-            <label>Email:</label>
-            <input type="email" name="" value="" placeholder="Enter Your Email">
-        </div>
-        <div class="txtb">
-            <label>Message:</label>
-            <textarea></textarea>
-        </div>
-        <a class="btn">Send</a>
+        <form action="/contact" method="POST" class="form">
+            <h1>Contact Us!)</h1>
+            <div class="txtb">
+                <label>Your Full Name:</label>
+                <input type="text" required name="username" placeholder="Enter Your Name">
+            </div>
+            <div class="txtb">
+                <label>Email:</label>
+                <input type="email" required name="email" placeholder="Enter Your Email">
+            </div>
+            <div class="txtb">
+                <label>Message:</label>
+                <textarea required name="text"></textarea>
+            </div>
+            <input type="submit" value="Send" class="btn" />
+        </form>
     </div>
+
+    <script src="/static/js/contact.js"></script>
 </body>
 
 </html>

@@ -7,7 +7,7 @@ for (let i = 0; i < info_btn.length; i++) {
 
 // sing-in\up
 let form = document.querySelectorAll('.form');
-let action = "/";
+let action = "";
 
 
 if (form != null) {
@@ -23,6 +23,7 @@ function formF(index, e) {
     e.preventDefault();
     let formData = new FormData(form[index]);
     const data = new URLSearchParams();
+    action = form[index].getAttribute("action");
 
     for (const pair of formData) {
         data.append(pair[0], pair[1])
@@ -42,11 +43,15 @@ function fetching(data) {
         .then(res => {
             console.log(res);
             if (res.msg == "redirect") {
-                if (res.type == "up") {
-                    window.location.replace("/profile/settings");
-                } else {
+                if (res.type == "in" || res.type == "restore") {
                     window.location.replace("/profile");
+                } else if (res.type == "forgot") {
+                    window.location.replace("/verification");
+                } else if (res.type == "verification") {
+                    window.location.replace("/restore");
                 }
+            } else if (res.type == "up") {
+                alert(res.msg);
             } else {
                 alert(res.err);
             }

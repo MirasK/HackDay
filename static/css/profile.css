@@ -1,17 +1,17 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: 'Nunito', sans-serif;
 }
 
-body{
+body {
     padding: 40px;
     overflow-x: hidden;
     background-image: linear-gradient(110deg, #ff3333, #ff9933);
 }
 
-.container{
+.container {
     display: grid;
     grid-template-areas: "aside main main" "aside main main";
     grid-gap: 60px;
@@ -20,46 +20,46 @@ body{
     transform: translate(-50%);
 }
 
-aside{
+aside {
     position: relative;
     width: 270px;
     height: 600px;
     background: #fff;
-    box-shadow: 0px 1px 4px 0px rgba(0,0,0,.7);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, .7);
     grid-area: aside;
     text-align: center;
     padding-top: 30px;
 }
 
-.main{
+.main {
     width: 700px;
     height: 600px;
     background: #fff;
-    box-shadow: 0px 1px 4px 0px rgba(0,0,0,.7);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, .7);
     grid-area: main;
     padding-top: 20px;
     position: relative;
     overflow: hidden;
 }
 
-aside img{
+aside img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     border: 1px solid #eee;
 }
 
-aside h4{
+aside h4 {
     font-size: 2rem;
     margin-top: 10px;
     color: #777;
 }
 
-aside h4 span{
+aside h4 span {
     color: #222;
 }
 
-aside .main-header p:nth-child(3){
+aside .main-header p:nth-child(3) {
     background: #ddd;
     margin: 0 auto;
     padding: 7px 0;
@@ -69,13 +69,13 @@ aside .main-header p:nth-child(3){
     font-size: 1rem;
 }
 
-.social{
+.social {
     display: flex;
     margin: 20px auto;
     justify-content: space-around;
 }
 
-.social span{
+.social span {
     margin: 10px;
     border: 1px solid #256af3;
     border-radius: 50%;
@@ -88,39 +88,39 @@ aside .main-header p:nth-child(3){
     cursor: pointer;
 }
 
-.social span:hover{
+.social span:hover {
     transition: all .3s ease-in-out;
     box-shadow: 0 1px 4px 0 #256af3;
 }
 
-address{
+address {
     display: flex;
     background: #eee;
     padding: 20px 5px;
 }
 
-address span:nth-child(1){
+address span:nth-child(1) {
     padding: 5px;
     margin-left: 10px;
 }
 
-address span i{
+address span i {
     font-size: 25px;
 }
 
-address p{
+address p {
     font-size: 1.1rem;
     margin-left: 10px;
     margin-top: 5px;
 }
 
-.contact{
+.contact {
     position: relative;
     text-align: center;
     top: 40px;
 }
 
-.mail{
+.mail {
     text-decoration: none;
     position: relative;
     background: #256af3;
@@ -129,61 +129,100 @@ address p{
     border-radius: 30px;
 }
 
-.mail:hover{
+.mail:hover {
     background: #fff;
     color: #256af3;
     border: 1px solid #256af3;
     transition: all .3s ease-in-out;
 }
 
-.heading-section{
+.heading-section {
     display: flex;
     justify-content: space-around;
 }
 
-.bottom{
+.bottom {
     background: #256af3;
     width: 30px;
     height: 3px;
 }
 
-.title h1, .ido h2{
+.title h1,
+.ido h2 {
     font-size: 2rem;
     margin: 7px 10px;
     margin-left: 0;
     text-transform: uppercase;
 }
 
-.nav ul{
+.nav ul {
     list-style: none;
     display: flex;
     background: #256af3;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,.5);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .5);
 }
 
-.nav ul li{
+.logout {
+    text-decoration: none;
+    position: relative;
+    background: #ff3333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+}
+
+.logout:hover {
+    background: #fff;
+    color: #ff3333;
+    border: 1px solid #ff3333;
+    transition: all .3s ease-in-out;
+}
+
+.go {
+    text-decoration: none;
+    position: relative;
+    background: #256af3;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 30px;
+    text-align: justify;
+    align-self: center;
+}
+
+.go a {
+    text-align: center;
+}
+
+.go:hover {
+    background: #fff;
+    color: #256af3;
+    border: 1px solid #256af3;
+    transition: all .3s ease-in-out;
+}
+
+.nav ul li {
     padding: 15px 20px;
     border-bottom: 2px solid transparent;
     transition: border .3s ease-in-out;
 }
 
-.nav ul li:hover{
+.nav ul li:hover {
     border-bottom: 2px solid #fff;
     cursor: pointer;
 }
 
-.nav ul li a{
+.nav ul li a {
     text-decoration: none;
     font-size: 1rem;
     text-transform: uppercase;
     color: #fff;
 }
 
-.info{
+.info {
     margin: 40px;
 }
 
-.ido{
+.ido {
     padding: 20px;
     background: #eee;
     width: 100%;
@@ -191,59 +230,57 @@ address p{
     position: absolute;
 }
 
-.ido-title{
+.ido-title {
     margin: 20px 10px;
 }
 
-.card-section{
+.card-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 30px;
 }
 
-.card-section .card{
+.card-section .card {
     padding: 20px;
     background: #fff;
     border-radius: 10px;
     display: flex;
 }
 
-.card-section .card-icon{
+.card-section .card-icon {
     justify-content: center;
     align-items: center;
     margin: 20px 10px 0 0;
 }
 
-.card-section .card-icon i{
+.card-section .card-icon i {
     font-size: 1.6rem;
     color: #256af3;
 }
 
-.nav ul{
+.nav ul {
     display: none;
 }
 
 @media only screen and (max-width: 1024px) {
-    .container{
+    .container {
         grid-gap: 15px;
     }
-    address p{
+    address p {
         font-size: 1rem;
         margin-left: 0;
     }
 }
 
 @media(max-width: 900px) {
-    .container{
-        grid-template-areas:
-        "aside"
-        "main";
+    .container {
+        grid-template-areas: "aside" "main";
     }
-    aside{
+    aside {
         grid-area: aside;
         width: 100%;
     }
-    .main{
+    .main {
         position: relative;
         display: block;
         grid-area: main;
@@ -252,51 +289,50 @@ address p{
         padding-bottom: 20px;
         overflow: visible;
     }
-    address{
+    address {
         justify-content: center;
     }
-    address p{
+    address p {
         margin-left: 20px;
         margin-top: 5px;
     }
-    .nav{
+    .nav {
         display: none;
     }
-    .nav ul{
+    .nav ul {
         display: grid;
         grid-template-columns: 1fr;
         background: #256af3;
         z-index: 999;
         list-style: none;
         position: absolute;
-        box-shadow: 0 1px 4px 0 rgba(0,0,0,.5);
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .5);
         top: 70px;
         right: 30px;
         transition: all .4s ease-in-out;
-        
     }
-    .nav1 ul li{
+    .nav1 ul li {
         padding: 20px;
     }
-    .nav ul li a{
+    .nav ul li a {
         text-decoration: none;
         font-size: 1rem;
         text-transform: uppercase;
         color: #fff;
     }
-    .card-section{
+    .card-section {
         grid-template-columns: repeat(1, 1fr);
     }
-    .card-section .card{
+    .card-section .card {
         padding: 30px;
     }
-    .card-section .card-icon{
+    .card-section .card-icon {
         margin: 10px 20px 0 0;
     }
-    .card-section .card-icon i{
+    .card-section .card-icon i {
         font-size: 1.8rem;
     }
-    .nav-toggle button{
+    .nav-toggle button {
         background: none;
         border: 0;
         cursor: pointer;
@@ -307,7 +343,7 @@ address p{
         top: 30px;
         right: 30px;
     }
-    .nav-toggle .inner{
+    .nav-toggle .inner {
         background: #000;
         height: 4px;
         width: 100%;
@@ -316,7 +352,8 @@ address p{
         left: 0;
         border-radius: 5px;
     }
-    .nav-toggle .inner:before, .nav-toggle .inner:after{
+    .nav-toggle .inner:before,
+    .nav-toggle .inner:after {
         background: #000;
         content: "";
         position: absolute;
@@ -324,15 +361,15 @@ address p{
         height: 4px;
         border-radius: 5px;
     }
-    .nav-toggle .inner:after{
+    .nav-toggle .inner:after {
         top: 20px;
         width: 70%;
     }
-    .nav-toggle .inner:before{
+    .nav-toggle .inner:before {
         top: 10px;
         width: 50%;
     }
-    .close i{
+    .close i {
         display: block;
         float: right;
         color: #fff;
@@ -341,16 +378,16 @@ address p{
 }
 
 @media(max-width: 500px) {
-    .card-section{
+    .card-section {
         padding: 20px;
     }
-    .card-section .card-icon{
+    .card-section .card-icon {
         margin: 10px 10px 0 0;
     }
-    .card-info h3{
+    .card-info h3 {
         font-size: 1.1rem;
     }
-    .card-info p{
+    .card-info p {
         font-size: .9rem;
     }
 }

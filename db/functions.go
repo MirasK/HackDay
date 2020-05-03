@@ -171,3 +171,8 @@ func GetStudInfosColl() *mongo.Collection {
 func GetMsgsColl() *mongo.Collection {
 	return client.Database(dbName).Collection("Msgs")
 }
+
+// GetTokenColl return Msgs collection
+func GetTokenColl() *mongo.Collection {
+	return client.Database(dbName).Collection("Tokens")
+}

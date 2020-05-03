@@ -1,10 +1,14 @@
 package app
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/base64"
 	"errors"
 	"hackday/db"
 	"net/http"
 	"regexp"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -18,7 +22,9 @@ func checkEmail(mode bool, email string) error {
 	if res != nil && e == nil && res["email"] == email {
 		if !mode {
 			return errors.New("this email is not empty")
-		} else if mode {
+		} else if mode && !res["ok"].(bool) {
+			return errors.New("you are not valid your account")
+		} else if mode && res["ok"].(bool) {
 			return nil
 		}
 	}
@@ -55,7 +61,7 @@ func checkPassword(mode bool, pass, login string) error {
 		if res != nil {
 			e = bcrypt.CompareHashAndPassword([]byte(res["password"].(string)), []byte(pass))
 			if e != nil {
-				return e
+				return errors.New("wrong password")
 			}
 		} else {
 			return e
@@ -126,7 +132,8 @@ func signUp(w http.ResponseWriter, r *http.Request) error {
 		return e
 	}
 	_, e = db.Create(db.GetUsersColl(), bson.M{"email": email, "password": string(password), "sesId": sid, "username": name, "gender": primitive.Null{},
-		"dob": primitive.Null{}, "photo": primitive.Null{}, "phone": primitive.Null{}, "userInfoId": primitive.Null{}, "role": role})
+		"dob": primitive.Null{}, "photo": primitive.Null{}, "phone": primitive.Null{}, "userInfoId": primitive.Null{},
+		"role": role, "ok": false, "expire": TimeExpire(1 * time.Hour)})
 	if e != nil {
 		return e
 	}
@@ -134,9 +141,59 @@ func signUp(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+var iv = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
+
+func toCrypt(text string) string {
+	key := "123456789012345678901234"
+	return Encrypt(key, text)
+}
+
+func fromCrypt(text string) string {
+	key := "123456789012345678901234"
+	return Decrypt(key, text)
+}
+
+func encodeBase64(b []byte) string {
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+func decodeBase64(s string) []byte {
+	data, err := base64.StdEncoding.DecodeString(s)
+	if err != nil {
+		panic(err)
+	}
+	return data
+}
+
+// Encrypt ...
+func Encrypt(key, text string) string {
+	block, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		panic(err)
+	}
+	plaintext := []byte(text)
+	cfb := cipher.NewCFBEncrypter(block, iv)
+	ciphertext := make([]byte, len(plaintext))
+	cfb.XORKeyStream(ciphertext, plaintext)
+	return encodeBase64(ciphertext)
+}
+
+// Decrypt ...
+func Decrypt(key, text string) string {
+	block, err := aes.NewCipher([]byte(key))
+	if err != nil {
+		panic(err)
+	}
+	ciphertext := decodeBase64(text)
+	cfb := cipher.NewCFBEncrypter(block, iv)
+	plaintext := make([]byte, len(ciphertext))
+	cfb.XORKeyStream(plaintext, ciphertext)
+	return string(plaintext)
+}
+
 // logout ...
 func logout(w http.ResponseWriter, r *http.Request) error {
-	cookie, err := r.Cookie("sesid")
+	cookie, err := r.Cookie("sid")
 	if err != nil || cookie.Value == "" {
 		return err
 	}

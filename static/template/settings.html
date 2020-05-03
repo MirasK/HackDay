@@ -14,8 +14,8 @@
         <div class="leftbox">
             <nav>
                 <a onclick="tabs(0)" class="tab"><i class="fa fa-user"></i></a>
-                <a onclick="tabs(1)" class="tab"><i class="fa fa-credit-card"></i></a>
-                <a onclick="tabs(2)" class="tab"><i class="fa fa-tv"></i></a>
+                <a onclick="tabs(1)" class="tab"><i class="fa fa-book-medical"></i></a>
+                <a onclick="tabs(2)" class="tab"><i class="fa fa-trophy"></i></a>
                 <a onclick="tabs(3)" class="tab"><i class="fa fa-tasks"></i></a>
                 <a onclick="tabs(4)" class="tab"><i class="fa fa-cog"></i></a>
             </nav>
@@ -23,79 +23,73 @@
         <div class="rightbox">
             <div class="profile tabShow">
                 <form class="form" action="/profile/settings/personal" method="POST">
-                    <h1>Personal Info</h1>
-                    <h2>Full Name</h2>
+                    <h1>Общая Информация</h1>
+                    <h2>ФИО</h2>
                     <input type="text" class="input" value="Name Surname">
-                    <h2>Birthday</h2>
+                    <h2>Дата Рождения</h2>
                     <input type="text" class="input" value="Birthday">
-                    <h2>Gender</h2>
-                    <input type="text" class="input" value="Gender">
-                    <h2>Email</h2>
-                    <input type="email" class="input" value="emial@gmail.com">
-                    <h2>Password</h2>
-                    <input type="password" class="input" value="passsword">
+                    <h2>Знание Языков</h2>
+                    <input type="text" class="input" value="Languages">
+                    <h2>Специальность</h2>
+                    <input type="text" class="input" value="Speciality">
+                    <h2>Университет</h2>
+                    <input type="text" class="input" value="University">
                     <input type="submit" value="Update" class="btn" />
                 </form>
             </div>
             <div class="payment tabShow">
                 <form class="form" action="/profile/settings/payment" method="POST">
-                    <h1>Payment Info</h1>
-                    <h2>Payment Method</h2>
-                    <input type="text" class="input" value="Credit Card Number">
-                    <h2>Billing Address</h2>
-                    <input type="text" class="input" value="Home Street">
-                    <h2>ZipCode</h2>
-                    <input type="text" class="input" value="ZipCode Number">
-                    <h2>Billing Date</h2>
-                    <input type="email" class="input" value="Billing Date">
-                    <h2>Redeem Card</h2>
-                    <input type="password" class="input" value="Gift Code">
+                    <h1>Медицинская Карта</h1>
+                    <h2>Группа Крови</h2>
+                    <input type="text" class="input" value="Blood">
+                    <h2>Аллергии</h2>
+                    <input type="text" class="input" value="Allergy">
+                    <h2>Психические отклонения</h2>
+                    <input type="text" class="input" value="Psycho">
+                    <h2>Хронические Заболевания</h2>
+                    <input type="text" class="input" value="Ill">
+                    <h2>Инвалидность</h2>
+                    <input type="password" class="input" value="Invalidity">
                     <input type="submit" value="Update" class="btn" />
                 </form>
             </div>
             <div class="subscription tabShow">
                 <form class="form" action="/profile/settings/subscription" method="POST">
-                    <h1>Subscription Info</h1>
-                    <h2>Payment Date</h2>
-                    <p>April 30, 2020</p>
-                    <h2>Next Charges</h2>
-                    <p>$10 <span>includes tax</span></p>
-                    <h2>Plan</h2>
-                    <p>Limited Plan</p>
-                    <h2>Monthly</h2>
-                    <p>$10/month</p>
+                    <h1>Достижения</h1>
+                    <h2>Достижение 1</h2>
+                    <input type="text" class="input" value="Achievement">
+                    <h2>Достижение 2</h2>
+                    <input type="text" class="input" value="Achievement">
+                    <h2>Достижение 3</h2>
+                    <input type="text" class="input" value="Achievement">
+                    <h2>Достижение 4</h2>
+                    <input type="text" class="input" value="Achievement">
                     <input type="submit" value="Update" class="btn" />
                 </form>
             </div>
             <div class="privacy tabShow">
                 <form class="form" action="/profile/settings/privacy" method="POST">
-                    <h1>Privacy Settings</h1>
-                    <h2>Manage Email Notifications</h2>
+                    <h1>Стажировки\Вакансии</h1>
+                    <h2>Стажировка 1</h2>
                     <p></p>
-                    <h2>Manage Privacy Settings</h2>
+                    <h2>Стажировка 2</h2>
                     <p></p>
-                    <h2>View Terms of Use</h2>
+                    <h2>Стажировка 3</h2>
                     <p></p>
-                    <h2>Personalized Ad Experience</h2>
+                    <h2>Стажировка 4</h2>
                     <p></p>
-                    <h2>Protect Account</h2>
+                    <h2>Стажировка 5</h2>
                     <p></p>
                     <input type="submit" value="Update" class="btn" />
                 </form>
             </div>
             <div class="settings tabShow">
                 <form class="form" action="/profile/settings/account" method="POST">
-                    <h1>Account Settings</h1>
-                    <h2>Sync Watchlist</h2>
-                    <p></p>
-                    <h2>Hold Subscription</h2>
-                    <p></p>
-                    <h2>Cancel Subscription</h2>
-                    <p></p>
-                    <h2>Your Devices</h2>
-                    <p></p>
-                    <h2>Referrals</h2>
-                    <p></p>
+                    <h1>Настройки Профиля</h1>
+                    <h2>Email</h2>
+                    <input type="email" class="input" value="emial@gmail.com">
+                    <h2>Смена Пароля</h2>
+                    <input type="password" class="input" value="passsword">
                     <input type="submit" value="Update" class="btn" />
                 </form>
             </div>

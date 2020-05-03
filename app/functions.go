@@ -1,9 +1,12 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 	"hackday/db"
+	"math/rand"
 	"net/http"
+	"net/smtp"
 	"net/url"
 	"os"
 	"time"
@@ -17,6 +20,7 @@ var (
 	e          error
 	logFile    *os.File
 	timeLayout = "2006-01-02 15:04:05"
+	codes      map[string]string
 )
 
 // WriteLog write to logs file
@@ -58,8 +62,8 @@ func CheckIsLogged(w http.ResponseWriter, r *http.Request) bool {
 	return true
 }
 
-// return time.Now().Add(add).Format(timeLayout)
-func timeExpire(add time.Duration) string {
+// TimeExpire return time.Now().Add(add).Format(timeLayout)
+func TimeExpire(add time.Duration) string {
 	return time.Now().Add(add).Format(timeLayout)
 }
 
@@ -70,7 +74,7 @@ func timeExpire(add time.Duration) string {
 // 	}
 // 	return nil
 func UpdateSession(sid string) error {
-	e = db.Update(db.GetSessColl(), bson.D{{Key: "filename", Value: sid}}, bson.D{{Key: "$set", Value: bson.M{"expire": timeExpire(1 * time.Hour)}}})
+	e = db.Update(db.GetSessColl(), bson.D{{Key: "filename", Value: sid}}, bson.D{{Key: "$set", Value: bson.M{"expire": TimeExpire(1 * time.Hour)}}})
 	if e != nil {
 		return e
 	}
@@ -86,7 +90,7 @@ func SessionStart(w http.ResponseWriter, r *http.Request, login, cookieName stri
 		if res == nil || res != nil && res["sesId"] == nil {
 			sid = newSessID()
 			e = SessionInit(sid)
-			_, e = db.Create(db.GetSessColl(), bson.M{"filename": sid, "expire": timeExpire(1 * time.Hour)})
+			_, e = db.Create(db.GetSessColl(), bson.M{"filename": sid, "expire": TimeExpire(1 * time.Hour)})
 			if e != nil {
 				return "", e
 			}
@@ -114,4 +118,36 @@ func SessionStart(w http.ResponseWriter, r *http.Request, login, cookieName stri
 	http.SetCookie(w, &sidCook)
 	http.SetCookie(w, &semCook)
 	return sid, nil
+}
+
+// SendMail ...
+func SendMail(from, to, msg string) error {
+	host := "smtp.mail.ru"
+	auth := smtp.PlainAuth("", from, "89f90gMiras", host)
+	if e := smtp.SendMail(host+":25", auth, from, []string{to}, []byte(msg)); e != nil {
+		return e
+	}
+	return nil
+}
+
+func doJS(w http.ResponseWriter, data *JSONAns) {
+	js, e := json.Marshal(data)
+	if e != nil {
+		WriteLog(e.Error())
+		http.Error(w, "internal server error", 500)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(js)
+}
+
+// StringWithCharset ...
+func StringWithCharset(length int) string {
+	charset := "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	seededRand := rand.New(rand.NewSource(time.Now().UnixNano()))
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
 }
