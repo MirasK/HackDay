@@ -4,11 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <link rel="stylesheet" href="/static/css/work.css">
+    <link rel="stylesheet" href="/static/fontawesome-free-5.13.0-web/css/all.css">
+    <title>Work</title>
 </head>
 
 <body>
+    <main>
+        <div class="employer-response">
+            <form method="POST" class="form" action="/works/">
+                <h3 class="form-h3">Write your message to employee</h3>
+                <div class="form-message">
+                    <input type="hidden" name="senderId" value="{{.ID}}">
+                    <span>Message</span>
+                    <textarea name="text" required></textarea>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 
+        <div class="container">
+            <section class="work work-itself">
+                <div class="work-date">
+                    <span>Date: {{.Date}}</span>
+                </div>
+
+                <div class="work-company">
+                    <span>Company: {{.Company}}</span>
+                </div>
+
+                <div class="work-info">
+                    <span>Info:</span>
+                    <p>{{.Info}}</p>
+                </div>
+
+                <div class="work-phone">
+                    <span>Phone: {{.Phone}}</span>
+                </div>
+
+                <div class="work-email">
+                    <span>Email: {{.Email}}</span>
+                </div>
+
+                <div class="work-type">
+                    <span>Type: {{.Type}}</span>
+                </div>
+
+                <div class="work-type">
+                    <span>Info:</span>
+                    <ul>
+                        {{range $i, $v := .Requirements}}
+                        <li>{{$v}}</li>
+                        {{end}}
+                    </ul>
+                </div>
+            </section>
+
+            <section class="req show">
+
+                {{if eq .Class "employer"}} {{if not .Users}}
+                <span>Not responsed</span> {{else}}
+                <span>Responses:</span> {{end}}{{range $i, $v := .Users}}
+                <div class="user user-{{$v.ID}}">
+                    <a href="/user/{{$v.ID}}">
+                        <div class="work-email">
+                            <span>Email: {{$v.Email}}</span>
+                        </div>
+                        <div class="work-username">
+                            <span>Username: {{$v.Username}}</span>
+                        </div>
+                        <div class="work-text">
+                            <span>Text: </span>
+                            <p>{{$v.Text}}</p>
+                        </div>
+                    </a>
+                    <div class="btns">
+                        <div class="accept">
+                            <span data-id="{{$v.ID}}"><i class="fa fa-check" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="refuse">
+                            <span data-id="{{$v.ID}}"><i class="fa fa-times" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </div>
+                {{end}} {{else}} {{if eq .IsResponsed true}}
+                <div class="response">You are responsed!</div>
+                {{else}}
+                <form action="/works/{{.ID}}" method="POST" class="form">
+                    <h3 class="form-h3">To response!</h3>
+                    <div class="work-type">
+                        <span>Text:</span>
+                        <textarea name="text" required placeholder="text about you"></textarea>
+                    </div>
+                    <input type="submit" value="Submit">
+                </form>
+                {{end}} {{end}}
+            </section>
+        </div>
+    </main>
+    <script src="/static/js/work.js"></script>
 </body>
 
 </html>

@@ -50,7 +50,7 @@ function fetching(data) {
                 } else if (res.type == "verification") {
                     window.location.replace("/restore");
                 }
-            } else if (res.type == "up") {
+            } else if (res.type == "up" && res.err == "") {
                 alert(res.msg);
             } else {
                 alert(res.err);

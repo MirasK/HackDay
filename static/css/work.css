@@ -1,0 +1,315 @@
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    background: url("/static/img/app/bg.jpg");
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 80%;
+    margin: auto;
+}
+
+form.form {
+    background: #00000059;
+    padding: 50px;
+    border-radius: 5px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+form.form>* {
+    margin-bottom: 1rem;
+}
+
+input[type="submit"] {
+    display: block;
+    margin: 2rem auto;
+    transition: 0.2s;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+input[type="submit"]:hover,
+.add-require:hover {
+    cursor: pointer;
+    background: red;
+    transition: 0.2s;
+}
+
+.form-h3 {
+    text-align: center;
+    color: white;
+    width: 100%;
+}
+
+.form-info {
+    flex-direction: column;
+}
+
+.form-info span {
+    margin-bottom: 0.5rem;
+}
+
+.form>div {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-require {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-require span {
+    width: 100%;
+    display: block;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #c1c1c1;
+}
+
+.add-require {
+    margin: 1rem auto;
+    background: none;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 5px;
+}
+
+.form-require input {
+    margin-bottom: 0.5rem;
+}
+
+input,
+textarea {
+    padding: 5px;
+    border-radius: 5px;
+    background: none;
+    color: white;
+}
+
+
+/* works */
+
+section.works {
+    width: 80vw;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.work {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    color: black;
+}
+
+section.works h1 {
+    text-align: center;
+    color: #063e6d;
+}
+
+.work-date,
+.work-company {
+    text-align: center;
+}
+
+.work-info {
+    border: 1px solid #000000;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.work-info p {
+    padding: 1rem;
+    margin: 0;
+}
+
+section.works a {
+    border-radius: 10px;
+    transition: 0.2s;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background: #ffffffad;
+    text-decoration: none;
+}
+
+section.works a:hover {
+    transition: 0.2s;
+    background: #000000cf;
+}
+
+section.works a:hover div {
+    color: white;
+    border-color: white;
+}
+
+main {
+    height: 100%;
+}
+
+
+/* work */
+
+section.work.work-itself,
+section.req.show {
+    background: #ebedee99;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 2rem;
+}
+
+section.req.show>span {
+    text-align: center;
+    display: block;
+}
+
+.work-type {
+    display: flex;
+    flex-direction: column;
+}
+
+.work-type textarea::placeholder {
+    color: white;
+}
+
+.response {
+    text-align: center;
+    color: #076007;
+    font-size: 1.5rem;
+}
+
+.user {
+    background: #0000002b;
+    border-radius: 5px;
+    padding: 1rem;
+    border: 1px solid black;
+    margin-top: 1rem;
+    display: flex;
+    color: black;
+    flex-direction: column;
+    transition: 0.2s;
+}
+
+.user:hover {
+    background: #e1e1e1;
+    transition: 0.2s;
+}
+
+section.req.show a {
+    text-decoration: none;
+    color: black;
+}
+
+.work-text p {
+    padding: 0 1rem;
+}
+
+
+/* req */
+
+.btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.btns div {
+    padding: 10px;
+    margin: 5px;
+}
+
+.accept {
+    transition: 0.2s;
+    color: green;
+}
+
+.refuse {
+    transition: 0.2s;
+    color: #ba0505;
+}
+
+.accept:hover,
+.refuse:hover {
+    cursor: pointer;
+    background: #00ff95;
+    transition: 0.2s;
+    border-radius: 10px;
+}
+
+.refuse:hover {
+    background: red;
+}
+
+.employer-response {
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    height: 100%;
+    background: #0000004a;
+    display: flex;
+    width: 100%;
+    left: -100%;
+    transition: 1s;
+}
+
+.employer-response.open {
+    left: 0;
+    transition: 1s;
+}
+
+.form-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.employer-response form {
+    z-index: 20;
+}
+
+
+/* my-subs */
+
+.subs {
+    background: #1e1a1a94;
+    width: 100%;
+    color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+}
+
+.subs-status {
+    text-align: center;
+}
+
+.subs>div>p {
+    padding: 0 1rem;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.subs-company {
+    text-align: center;
+}

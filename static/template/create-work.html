@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <link rel="stylesheet" href="/static/css/work.css">
+    <title>Create new work</title>
+</head>
+
+<body>
+    <div class="container">
+        <form class="form" action="/create-work" method="POST">
+            <h3 class="form-h3">Create new vacantion</h3>
+            <div class="form-company">
+                <span>Company:</span>
+                <input type="text" name="company" required placeholder="OOO Rocket">
+            </div>
+            <div class="form-info">
+                <span>Info:</span>
+                <textarea name="info" required placeholder="About vacantion"></textarea>
+            </div>
+            <div class="form-require">
+                <span> Requirements:</span>
+                <input class="requirements" type="text" name="requirements" required placeholder="C#">
+                <div class="add-require">Add one more requirement</div>
+            </div>
+            <div class="form-type">
+                <span> Type:</span>
+                <div>
+                    <label>
+                        Stage<input type="radio" name="type" value="Stage">
+                    </label>
+                    <label>
+                        Work<input type="radio" name="type" value="Work">
+                    </label>
+                </div>
+            </div>
+            <div class="form-phone">
+                <span>Phone Number:</span>
+                <input type="text" name="phone" required placeholder="87777777777">
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <script src="/static/js/work.js"></script>
+</body>
+
+</html>

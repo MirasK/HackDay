@@ -44,7 +44,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(WorkType),
 				Description: "Get works list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					arr, e := db.GetAllByFilter(db.GetWorksColl(), bson.M{})
+					arr, e := db.GetAllByFilter(db.GetWorksColl(), bson.M{}, nil)
 					if e != nil {
 						return nil, e
 					}
@@ -79,7 +79,7 @@ var queryType = graphql.NewObject(
 				Type:        graphql.NewList(UserType),
 				Description: "Get users list",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					arr, e := db.GetAllByFilter(db.GetUsersColl(), bson.M{})
+					arr, e := db.GetAllByFilter(db.GetUsersColl(), bson.M{}, nil)
 					if e != nil {
 						log.Fatal(e)
 						return nil, e

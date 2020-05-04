@@ -69,8 +69,8 @@ func SessionDestroy(sid string) {
 	}
 }
 
-// Destroy ...
-func Destroy(ID, table string) {
+// Destroy in db
+func Destroy(ID interface{}, table string) {
 	switch table {
 	case "user":
 		e = db.Delete(db.GetUsersColl(), bson.D{{Key: "expire", Value: ID}})
@@ -81,6 +81,20 @@ func Destroy(ID, table string) {
 	case "sess":
 		e = db.Delete(db.GetSessColl(), bson.D{{Key: "filename", Value: ID}})
 		break
+	case "userinfo":
+		e = db.Delete(db.GetStudInfosColl(), bson.D{{Key: "email", Value: ID}})
+		break
+	case "med":
+		e = db.Delete(db.GetMedCardsColl(), bson.D{{Key: "email", Value: ID}})
+		break
+	case "resume":
+		e = db.Delete(db.GetResumesColl(), bson.D{{Key: "email", Value: ID}})
+		break
+	case "work":
+		e = db.Delete(db.GetWorksColl(), bson.D{{Key: "_id", Value: ID}})
+		break
+	case "msg":
+		e = db.Delete(db.GetMsgsColl(), bson.D{{Key: "ownerId", Value: ID}})
 	}
 	if e != nil {
 		WriteLog(e.Error())
@@ -97,8 +111,8 @@ func Destroy(ID, table string) {
 // 	for _, v := range res {
 // 		go SessionDestroy(v["filename"].(string))
 // 	}
-func SessionGC() {
-	res, e := db.GetAllByFilter(db.GetSessColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}})
+func sessionGC() {
+	res, e := db.GetAllByFilter(db.GetSessColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}}, nil)
 	if e != nil {
 		WriteLog(e.Error())
 		return
@@ -109,8 +123,8 @@ func SessionGC() {
 }
 
 // TokenGC ...
-func TokenGC() {
-	res, e := db.GetAllByFilter(db.GetTokenColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}})
+func tokenGC() {
+	res, e := db.GetAllByFilter(db.GetTokenColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}}, nil)
 	if e != nil {
 		WriteLog(e.Error())
 		return
@@ -121,14 +135,32 @@ func TokenGC() {
 }
 
 // UserGC ...
-func UserGC() {
-	res, e := db.GetAllByFilter(db.GetUsersColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}})
+func userGC() {
+	res, e := db.GetAllByFilter(db.GetUsersColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}}, nil)
 	if e != nil {
 		WriteLog(e.Error())
 		return
 	}
+
 	for _, v := range res {
+		go Destroy(v["email"].(string), "userinfo")
+		go Destroy(v["email"].(string), "med")
+		go Destroy(v["email"].(string), "resume")
 		go Destroy(v["expire"].(string), "user")
+	}
+}
+
+// workGC
+func workGC() {
+	res, e := db.GetAllByFilter(db.GetWorksColl(), bson.M{"expire": bson.M{"$lte": TimeExpire(1 * time.Nanosecond)}}, nil)
+	if e != nil {
+		WriteLog(e.Error())
+		return
+	}
+
+	for _, v := range res {
+		go Destroy(v["_id"], "msg")
+		go Destroy(v["_id"], "work")
 	}
 }
 
@@ -140,10 +172,13 @@ func UserGC() {
 // 	}
 func CheckPerMin() {
 	for {
-		timer := time.NewTimer(1 * time.Minute)
+		timer := time.NewTimer(1 * time.Second)
 		<-timer.C
-		go SessionGC()
-		go TokenGC()
-		go UserGC()
+		go sessionGC()
+		go tokenGC()
+		if len(users) != 0 {
+			go userGC()
+		}
+		go workGC()
 	}
 }

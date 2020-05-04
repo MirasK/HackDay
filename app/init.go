@@ -10,6 +10,7 @@ func InitProg() error {
 	timeLayout = "2006-01-02 15:04:05"
 	logFile, e = os.Create("logs.txt")
 	codes = map[string]string{}
+	users = map[string]string{}
 	if e != nil {
 		return e
 	}

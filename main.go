@@ -21,23 +21,27 @@ func routes() *http.ServeMux {
 	})
 
 	// app hanlders
-	mux.HandleFunc("/", app.Hsign)                       // 100%
-	mux.HandleFunc("/s/", app.HsaveUser)                 // 100%
-	mux.HandleFunc("/forgot", app.Hforgot)               // 0%
-	mux.HandleFunc("/verification", app.Hverification)   // 50%
-	mux.HandleFunc("/restore", app.Hrestore)             // 0%
-	mux.HandleFunc("/logout", app.Hlogout)               // 50%
-	mux.HandleFunc("/profile", app.Hprofile)             // 75%
-	mux.HandleFunc("/profile/settings/", app.Hsettings)  // 50% University name to add
-	mux.HandleFunc("/profile/change-photo", app.Hphoto)  // 0%
-	mux.HandleFunc("/profile/change-social", app.Hphoto) // 0%
-	mux.HandleFunc("/user/", app.Hprofile)               // 50%
-	mux.HandleFunc("/user/info/", app.Hsettings)         // 50%
-	mux.HandleFunc("/contact", app.Hcontact)             // 75%
-	mux.HandleFunc("/create-work", app.HworkCreate)      // 0%
-	mux.HandleFunc("/works", app.Hworks)                 // 0%
-	mux.HandleFunc("/work/", app.Hwork)                  // 0%
-	mux.HandleFunc("/work/req", app.HworkReq)            // 0% ????????????
+	mux.HandleFunc("/", app.Hsign)                        // 100%
+	mux.HandleFunc("/s/", app.HsaveUser)                  // 100%
+	mux.HandleFunc("/forgot", app.Hforgot)                // 100%
+	mux.HandleFunc("/verification", app.Hverification)    // 100%
+	mux.HandleFunc("/restore", app.Hrestore)              // 100%
+	mux.HandleFunc("/logout", app.Hlogout)                // 100%
+	mux.HandleFunc("/profile", app.Hprofile)              // 100%
+	mux.HandleFunc("/profile/settings/", app.Hsettings)   // 0%
+	mux.HandleFunc("/profile/ch/ph", app.Hphoto)          // 0%
+	mux.HandleFunc("/profile/ch/s", app.Hphoto)           // 0%
+	mux.HandleFunc("/profile/ch/u", app.Hphoto)           // 0%
+	mux.HandleFunc("/profile/my-vacantions", app.Hworks)  // 100%
+	mux.HandleFunc("/profile/my-vacantions/", app.Hwork)  // 100%
+	mux.HandleFunc("/profile/my-subscription", app.Hsubs) // 0%
+	mux.HandleFunc("/user/", app.Hprofile)                // 100%
+	mux.HandleFunc("/user/settings/", app.Hsettings)      // 0%
+	mux.HandleFunc("/contact", app.Hcontact)              // 100%
+	mux.HandleFunc("/create-work", app.HworkCreate)       // 100%
+	mux.HandleFunc("/filter", app.Hfilter)                // 100%
+	mux.HandleFunc("/works", app.Hworks)                  // 100%
+	mux.HandleFunc("/works/", app.Hwork)                  // 100%
 
 	// static files define
 	static := http.FileServer(http.Dir("static"))

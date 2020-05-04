@@ -50,15 +50,15 @@ func GetOneByFilter(collection *mongo.Collection, filter bson.M) (primitive.M, e
 }
 
 // GetAllByFilter this func get all documents from collection
-// 	var arr []interface{}
-// 	var ids []interface{}
-// 	ids = append(ids, result["_id"])
-// 	arr = append(arr, filler)
-func GetAllByFilter(collection *mongo.Collection, filter bson.M) ([]primitive.M, error) {
+// 	var arr []primitive.M
+// 	cur, e := collection.Find(ctx, filter)
+// 	e = cur.Decode(&result)
+// 	arr = append(arr, result)
+func GetAllByFilter(collection *mongo.Collection, filter bson.M, opt *options.FindOptions) ([]primitive.M, error) {
 	var arr []primitive.M
 	ctx, cncl := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cncl()
-	cur, e := collection.Find(ctx, filter)
+	cur, e := collection.Find(ctx, filter, opt)
 	if e != nil {
 		return nil, e
 	}

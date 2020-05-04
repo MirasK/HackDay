@@ -1,13 +1,17 @@
 package app
 
 import (
+	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"crypto/rand"
 	"encoding/base64"
 	"errors"
 	"hackday/db"
+	"io"
 	"net/http"
 	"regexp"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -123,72 +127,116 @@ func signUp(w http.ResponseWriter, r *http.Request) error {
 	if e != nil {
 		return e
 	}
-	sid, e := SessionStart(w, r, email, "sid")
-	if e != nil {
-		return e
-	}
 	password, e := bcrypt.GenerateFromPassword([]byte(pass), 4)
 	if e != nil {
 		return e
 	}
-	_, e = db.Create(db.GetUsersColl(), bson.M{"email": email, "password": string(password), "sesId": sid, "username": name, "gender": primitive.Null{},
-		"dob": primitive.Null{}, "photo": primitive.Null{}, "phone": primitive.Null{}, "userInfoId": primitive.Null{},
-		"role": role, "ok": false, "expire": TimeExpire(1 * time.Hour)})
+	// if role == "student" {
+	// 	_, e = db.Create(db.GetStudInfosColl(), bson.M{"email": email, "achievs": []string{}, "sertificates": []string{}})
+	// 	_, e = db.Create(db.GetMedCardsColl(), bson.M{"email": email, "bloodGroup": "None", "ills": []string{}, "phobies": []string{}})
+	// 	_, e = db.Create(db.GetResumesColl(), bson.M{"email": email, "skills": []string{}, "whereWorks": []string{}, "aboutMe": "None",
+	// 		"link": "None", "date": TimeExpire(1 * time.Nanosecond)})
+	// }
+	_, e = db.Create(db.GetUsersColl(), bson.M{"email": email, "password": string(password), "sesId": primitive.Null{}, "username": name, "gender": "None", "socials": []string{},
+		"dob": primitive.Null{}, "photo": "None", "phone": "None", "appertain": "None", "role": role, "ok": false, "expire": TimeExpire(1 * time.Hour)})
 	if e != nil {
 		return e
 	}
-	SetSesVal("login", email, sid)
+	users[email] = email
 	return nil
 }
 
 var iv = []byte{35, 46, 57, 24, 85, 35, 24, 74, 87, 35, 88, 98, 66, 32, 14, 05}
 
 func toCrypt(text string) string {
-	key := "123456789012345678901234"
-	return Encrypt(key, text)
+	key := []byte("hack20MirasMiron")
+	res, _ := encrypt(key, text)
+	return res
 }
 
 func fromCrypt(text string) string {
-	key := "123456789012345678901234"
-	return Decrypt(key, text)
+	key := []byte("hack20MirasMiron")
+	res, _ := decrypt(key, text)
+	return res
 }
 
-func encodeBase64(b []byte) string {
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeBase64(s string) []byte {
-	data, err := base64.StdEncoding.DecodeString(s)
-	if err != nil {
-		panic(err)
+// bottom 6 func is use to enc and decr message
+func addBase64Padding(value string) string {
+	m := len(value) % 4
+	if m != 0 {
+		value += strings.Repeat("=", 4-m)
 	}
-	return data
+
+	return value
 }
 
-// Encrypt ...
-func Encrypt(key, text string) string {
-	block, err := aes.NewCipher([]byte(key))
-	if err != nil {
-		panic(err)
+func removeBase64Padding(value string) string {
+	return strings.Replace(value, "=", "", -1)
+}
+
+func pad(src []byte) []byte {
+	padding := aes.BlockSize - len(src)%aes.BlockSize
+	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(src, padtext...)
+}
+
+func unpad(src []byte) ([]byte, error) {
+	length := len(src)
+	unpadding := int(src[length-1])
+
+	if unpadding > length {
+		return nil, errors.New("unpad error. This could happen when incorrect encryption key is used")
 	}
-	plaintext := []byte(text)
+
+	return src[:(length - unpadding)], nil
+}
+
+func encrypt(key []byte, text string) (string, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	msg := pad([]byte(text))
+	ciphertext := make([]byte, aes.BlockSize+len(msg))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		return "", err
+	}
+
 	cfb := cipher.NewCFBEncrypter(block, iv)
-	ciphertext := make([]byte, len(plaintext))
-	cfb.XORKeyStream(ciphertext, plaintext)
-	return encodeBase64(ciphertext)
+	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(msg))
+	finalMsg := removeBase64Padding(base64.URLEncoding.EncodeToString(ciphertext))
+	return finalMsg, nil
 }
 
-// Decrypt ...
-func Decrypt(key, text string) string {
-	block, err := aes.NewCipher([]byte(key))
+func decrypt(key []byte, text string) (string, error) {
+	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	ciphertext := decodeBase64(text)
-	cfb := cipher.NewCFBEncrypter(block, iv)
-	plaintext := make([]byte, len(ciphertext))
-	cfb.XORKeyStream(plaintext, ciphertext)
-	return string(plaintext)
+
+	decodedMsg, err := base64.URLEncoding.DecodeString(addBase64Padding(text))
+	if err != nil {
+		return "", err
+	}
+
+	if (len(decodedMsg) % aes.BlockSize) != 0 {
+		return "", errors.New("blocksize must be multipe of decoded message length")
+	}
+
+	iv := decodedMsg[:aes.BlockSize]
+	msg := decodedMsg[aes.BlockSize:]
+
+	cfb := cipher.NewCFBDecrypter(block, iv)
+	cfb.XORKeyStream(msg, msg)
+
+	unpadMsg, err := unpad(msg)
+	if err != nil {
+		return "", err
+	}
+
+	return string(unpadMsg), nil
 }
 
 // logout ...

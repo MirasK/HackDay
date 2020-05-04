@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <link rel="stylesheet" href="/static/css/work.css">
+    <title>Set filter</title>
+</head>
+
+<body>
+
+    <main>
+        <section class="container">
+            <form class="form" action="/works" method="GET">
+                <h3 class="form-h3">Set your filter</h3>
+                <div class="form-company">
+                    <span>Company:</span>
+                    <input type="text" name="c" placeholder="OOO Rocket">
+                </div>
+
+                <div class="form-require">
+                    <span> Requirements:</span>
+                    <input class="requirements" type="text" name="r" placeholder="C#">
+                </div>
+                <input type="submit" value="Submit!">
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>

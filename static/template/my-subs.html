@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <link rel="stylesheet" href="/static/css/work.css">
+    <title>My subs</title>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            {{if not .}}
+            <h2 class="container-h2">Ya not responded to atleast one work</h2>
+            {{else}} {{range $i, $v := .}}
+            <div class="subs subs-{{$v.ID}}">
+                <div class="subs-status" {{if $v.Status}} style="color: #14ed14;" {{else}} style="color: red;" {{end}}>
+                    <span>Status: {{$v.Status}}</span>
+                </div>
+                <div class="subs-company">
+                    <span>Company: {{$v.Company}}</span>
+                </div>
+                <div class="subs-text">
+                    <span>{{if eq .Type "to student"}}Employer write you: {{else}}Your text:{{end}}</span>
+                    <p>{{$v.Text}}</p>
+                </div>
+                <div class="subs-info">
+                    <span>Info:</span>
+                    <p>{{$v.Info}}</p>
+                </div>
+
+            </div>
+            {{end}} {{end}}
+        </div>
+    </main>
+</body>
+
+</html>

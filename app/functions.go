@@ -21,6 +21,7 @@ var (
 	logFile    *os.File
 	timeLayout = "2006-01-02 15:04:05"
 	codes      map[string]string
+	users      map[string]string
 )
 
 // WriteLog write to logs file
@@ -79,6 +80,17 @@ func UpdateSession(sid string) error {
 		return e
 	}
 	return nil
+}
+
+func updateCooks(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("sid")
+	sid := cookie.Value
+	cok2, _ := r.Cookie("sem")
+	sem := cok2.Value
+	sidCook := http.Cookie{Name: "sid", Value: sid, Path: "/", HttpOnly: true, MaxAge: 3600}
+	semCook := http.Cookie{Name: "sem", Value: sem, Path: "/", HttpOnly: true, MaxAge: 3600}
+	http.SetCookie(w, &sidCook)
+	http.SetCookie(w, &semCook)
 }
 
 // SessionStart ...

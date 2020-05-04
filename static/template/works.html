@@ -4,11 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <link rel="stylesheet" href="/static/css/work.css">
+    <title>Vacantions</title>
 </head>
 
 <body>
+    <main>
+        <section class="works">
+            <h1>Works</h1>
+            {{range $i, $v := .}}
+            <a href="/{{$v.Class}}/{{$v.ID}}">
+                <div class="work work-{{$v.ID}}">
+                    <div class="work-date">
+                        <span>Date: {{$v.Date}}</span>
+                    </div>
 
+                    <div class="work-company">
+                        <span>Company: {{$v.Company}}</span>
+                    </div>
+
+                    <div class="work-info">
+                        <span>Info:</span>
+                        <p>{{$v.Info}}</p>
+                    </div>
+                </div>
+            </a>
+            {{end}}
+        </section>
+    </main>
 </body>
 
 </html>
