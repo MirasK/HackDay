@@ -1,3 +1,1 @@
-2020-05-05 22:51:51| listening on: http://localhost:8080
-2020-05-05 22:51:55| template: change.html:30: unexpected {{end}}
-2020-05-05 22:53:13| template: change.html:39: unexpected EOF
+2020-05-05 22:54:53| listening on: http://localhost:8080

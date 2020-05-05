@@ -25,9 +25,9 @@
                     <h2>Facebook</h2>
                     <input type="text" name="facebook" placeholder="{{range $i, $v := .Social}}{{if eq $i 0}}{{if $v}}{{$v}}{{else}}https://www.facebook.com/miron.arystan.10{{end}}{{end}}{{end}}">
                     <h2>Linkedin</h2>
-                    <input type="text" name="linkedin" placeholder="{{range $i, $v := .Social}}{{if eq $i 1}}{{if $v}}{{$v}}{{else}}www.linkedin.com/pub/brenda-demo-meller/2a/412/523{{end}}{{end}}{{end}}">
+                    <input type="text" name="linkedin" placeholder="{{range $i, $v := .Social}}{{if eq $i 1}}{{$v}}{{end}}{{end}}">
                     <h2>Instagram</h2>
-                    <input type="text" name="instagram" placeholder="{{range $i, $v := .Social}}{{if eq $i 2}}{{if $v}}{{$v}}{{else}}https://www.instagram.com/hello.alem/{{end}}{{end}}{{end}}">
+                    <input type="text" name="instagram" placeholder="{{range $i, $v := .Social}}{{if eq $i 2}}{{$v}}{{end}}{{end}}">
                 </div>
                 <input type="submit" value="Submit">
             </form>
