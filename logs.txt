@@ -1,1 +1,2 @@
-2020-05-05 22:10:47| listening on: http://localhost:8080
+2020-05-05 22:41:02| listening on: http://localhost:8080
+2020-05-05 22:41:07| template: profile.html:27:58: executing "profile.html" at <$i>: can't give argument to non-function $i

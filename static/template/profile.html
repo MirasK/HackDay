@@ -24,9 +24,9 @@
 
                     <div class="social">
                         <h3>Socials:</h3>
-                        {{range $i, $v := .Socials}} {{if $i eq 0}}
-                        <span><a href="{{$v}}"><i style="color: #0033cc;" class="fab fa-facebook"></i></a></span> {{end}} {{if $i eq 1}}
-                        <span><a href="{{$v}}"><i style="color: #3366ff;" class="fab fa-linkedin"></i></a></span> {{end}} {{if $i eq 2}}
+                        {{range $i, $v := .Socials}} {{if eq $i 0}}
+                        <span><a href="{{$v}}"><i style="color: #0033cc;" class="fab fa-facebook"></i></a></span> {{end}} {{if eq $i 1}}
+                        <span><a href="{{$v}}"><i style="color: #3366ff;" class="fab fa-linkedin"></i></a></span> {{end}} {{if eq $i 2}}
                         <span><a href="{{$v}}"><i style="color: rgb(228, 64, 95);" class="fab fa-instagram"></i></a></span> {{end}} {{end}} {{if not .Socials }} None {{end}}
                     </div>
                     {{if .IsUser}}

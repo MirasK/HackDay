@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="photo container-div">
-            <form class="form" action="/profile/ch/{{.ID}}" method="POST">
+            <form class="form change" action="/profile/ch/" method="POST">
                 {{if ne .Photo "None"}}
                 <div class="img">
                     <img src="/{{.Photo}}" alt="avatar">
@@ -33,9 +33,11 @@
                     <h2>Instagram</h2>
                     <input type="text" name="instagram" placeholder="https://www.instagram.com/hello.alem/"> {{end}}
                 </div>
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
+    <script src="/static/js/change.js"></script>
 </body>
 
 </html>

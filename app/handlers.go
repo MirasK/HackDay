@@ -360,7 +360,16 @@ func HphotoAndSocials(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		} else if r.Method == "POST" {
-			return
+			cook, _ := r.Cookie("sem")
+			sem, _ := url.QueryUnescape(cook.Value)
+			res, _ := db.GetOneByFilter(db.GetUsersColl(), bson.M{"email": sem})
+			data := &JSONAns{"updated!", "change", "", ""}
+			e = updateChange(res["_id"].(primitive.ObjectID), r)
+			if e != nil {
+				data.E = e.Error()
+				data.Msg = ""
+			}
+			doJS(w, data)
 		}
 		return
 	}

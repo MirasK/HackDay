@@ -313,3 +313,24 @@ section.req.show a {
 .subs-company {
     text-align: center;
 }
+
+
+/* change */
+
+form.form.change {
+    color: white;
+    align-items: center;
+}
+
+.socials {
+    display: flex;
+    flex-direction: column;
+}
+
+.img {
+    height: 200px;
+}
+
+.img img {
+    height: 100%;
+}

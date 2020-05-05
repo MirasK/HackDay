@@ -12,8 +12,8 @@ if (form != null) {
 
 function formF(e) {
     e.preventDefault();
-    let formData = new FormData(form[index]);
-    action = form[index].getAttribute("action");
+    let formData = new FormData(form);
+    action = form.getAttribute("action");
     fetchingFile(formData);
 }
 

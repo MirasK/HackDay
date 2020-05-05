@@ -194,3 +194,44 @@ func updateUser(tab int, idr string, r *http.Request) error {
 
 	return nil
 }
+
+func updateChange(ID primitive.ObjectID, r *http.Request) error {
+	face := r.FormValue("facebook")
+	linked := r.FormValue("linkedin")
+	insta := r.FormValue("instagram")
+	arr := []string{}
+	if face != "" {
+		arr = append(arr, face)
+	}
+	if linked != "" {
+		arr = append(arr, linked)
+	}
+	if insta != "" {
+		arr = append(arr, insta)
+	}
+	file, fh, e := r.FormFile("photo")
+	link := ""
+	if fh != nil {
+		defer file.Close()
+		if e != nil {
+			return e
+		}
+		str := StringWithCharset(8)
+		link = "static/img/avatars/" + str + fh.Filename
+		e = uploadFile(&file, link)
+		if e != nil {
+			return e
+		}
+	}
+
+	if link != "" {
+		e = db.Update(db.GetUsersColl(), bson.D{{Key: "_id", Value: ID}}, bson.D{{Key: "$set", Value: bson.M{"photo": link, "socials": arr}}})
+	} else {
+		e = db.Update(db.GetUsersColl(), bson.D{{Key: "_id", Value: ID}}, bson.D{{Key: "$set", Value: bson.M{"socials": arr}}})
+	}
+
+	if e != nil {
+		return e
+	}
+	return nil
+}
