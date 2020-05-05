@@ -51,8 +51,8 @@ func routes() *http.ServeMux {
 func main() {
 	defaultPort := "8080"
 	port := os.Getenv("PORT")
-	// host := "https://hackday2020.herokuapp.com"
-	host := "http://localhost"
+	host := "https://hackday2020.herokuapp.com"
+	// host := "http://localhost"
 	if host == "http://localhost" {
 		port = defaultPort
 	}
