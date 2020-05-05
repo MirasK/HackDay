@@ -28,15 +28,13 @@ func routes() *http.ServeMux {
 	mux.HandleFunc("/restore", app.Hrestore)              // 100%
 	mux.HandleFunc("/logout", app.Hlogout)                // 100%
 	mux.HandleFunc("/profile", app.Hprofile)              // 100%
-	mux.HandleFunc("/profile/settings/", app.Hsettings)   // 0%
-	mux.HandleFunc("/profile/ch/ph", app.Hphoto)          // 0%
-	mux.HandleFunc("/profile/ch/s", app.Hphoto)           // 0%
-	mux.HandleFunc("/profile/ch/u", app.Hphoto)           // 0%
+	mux.HandleFunc("/profile/settings/", app.Hsettings)   // 100%
+	mux.HandleFunc("/profile/ch/", app.HphotoAndSocials)  // 0%
 	mux.HandleFunc("/profile/my-vacantions", app.Hworks)  // 100%
 	mux.HandleFunc("/profile/my-vacantions/", app.Hwork)  // 100%
-	mux.HandleFunc("/profile/my-subscription", app.Hsubs) // 0%
+	mux.HandleFunc("/profile/my-subscription", app.Hsubs) // 100%
 	mux.HandleFunc("/user/", app.Hprofile)                // 100%
-	mux.HandleFunc("/user/settings/", app.Hsettings)      // 0%
+	mux.HandleFunc("/user/settings/", app.Hsettings)      // 100%
 	mux.HandleFunc("/contact", app.Hcontact)              // 100%
 	mux.HandleFunc("/create-work", app.HworkCreate)       // 100%
 	mux.HandleFunc("/filter", app.Hfilter)                // 100%
@@ -53,6 +51,7 @@ func routes() *http.ServeMux {
 func main() {
 	defaultPort := "8080"
 	port := os.Getenv("PORT")
+	// host := "https://hackday2020.herokuapp.com"
 	host := "http://localhost"
 	if host == "http://localhost" {
 		port = defaultPort

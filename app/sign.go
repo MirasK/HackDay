@@ -131,14 +131,15 @@ func signUp(w http.ResponseWriter, r *http.Request) error {
 	if e != nil {
 		return e
 	}
-	// if role == "student" {
-	// 	_, e = db.Create(db.GetStudInfosColl(), bson.M{"email": email, "achievs": []string{}, "sertificates": []string{}})
-	// 	_, e = db.Create(db.GetMedCardsColl(), bson.M{"email": email, "bloodGroup": "None", "ills": []string{}, "phobies": []string{}})
-	// 	_, e = db.Create(db.GetResumesColl(), bson.M{"email": email, "skills": []string{}, "whereWorks": []string{}, "aboutMe": "None",
-	// 		"link": "None", "date": TimeExpire(1 * time.Nanosecond)})
-	// }
+	if role == "student" {
+		_, e = db.Create(db.GetStudInfosColl(), bson.M{"email": email, "achievs": []string{"None"}, "sertificates": []string{"None"}})
+		_, e = db.Create(db.GetMedCardsColl(), bson.M{"email": email, "bloodGroup": "None", "ills": []string{"None"}, "phychs": []string{"None"},
+			"chrons": []string{"None"}, "allergs": []string{"None"}, "invalid": "None"})
+		_, e = db.Create(db.GetResumesColl(), bson.M{"email": email, "skills": []string{"None"}, "whereWorks": []string{"None"}, "aboutMe": "None",
+			"link": "None", "date": TimeExpire(1 * time.Nanosecond)})
+	}
 	_, e = db.Create(db.GetUsersColl(), bson.M{"email": email, "password": string(password), "sesId": primitive.Null{}, "username": name, "gender": "None", "socials": []string{},
-		"dob": primitive.Null{}, "photo": "None", "phone": "None", "appertain": "None", "role": role, "ok": false, "expire": TimeExpire(1 * time.Hour)})
+		"dob": "None", "photo": "None", "phone": "None", "appertain": "None", "role": role, "ok": false, "expire": TimeExpire(1 * time.Hour)})
 	if e != nil {
 		return e
 	}

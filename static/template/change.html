@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/work.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/app/icon.png" />
+    <title>Change</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="photo container-div">
+            <form class="form" action="/profile/ch/{{.ID}}" method="POST">
+                {{if ne .Photo "None"}}
+                <div class="img">
+                    <img src="/{{.Photo}}" alt="avatar">
+                </div>
+                {{end}}
+                <h2>Photo</h2>
+                <input type="file" name="photo" class="input" value="Загрузить" accept=".jpg, .jpeg, .png">
+                <h2>Socials</h2>
+                <div class="socials">
+                    {{range $i, $v := .Social}} {{if $i eq 0}}
+                    <span><a href="{{$v}}"><i style="color: #0033cc;" class="fab fa-facebook"></i></a></span> {{end}} {{if $i eq 1}}
+                    <span><a href="{{$v}}"><i style="color: #3366ff;" class="fab fa-linkedin"></i></a></span> {{end}} {{if $i eq 2}}
+                    <span><a href="{{$v}}"><i style="color: rgb(228, 64, 95);" class="fab fa-instagram"></i></a></span> {{end}} {{end}} {{if not .Social }}
+                    <h2>Facebook</h2>
+                    <input type="text" name="facebook" placeholder="https://www.facebook.com/miron.arystan.10">
+                    <h2>Linkedin</h2>
+                    <input type="text" name="linkedin" placeholder="www.linkedin.com/pub/brenda-demo-meller/2a/412/523">
+                    <h2>Instagram</h2>
+                    <input type="text" name="instagram" placeholder="https://www.instagram.com/hello.alem/"> {{end}}
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

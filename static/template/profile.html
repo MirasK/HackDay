@@ -18,7 +18,7 @@
                     {{if eq .Photo "None"}}
                     <img src="/static/img/app/user.png" alt="user"> {{else}}
                     <img src="{{.Photo}}" alt="user"> {{end}} {{if .IsUser}}
-                    <a href="/profile/ch/ph">Change</a> {{end}}
+                    <a href="/profile/ch/{{.ID}}">Change</a> {{end}}
 
                     <h4>{{.Username}}</h4>
 
@@ -30,13 +30,13 @@
                         <span><a href="{{$v}}"><i style="color: rgb(228, 64, 95);" class="fab fa-instagram"></i></a></span> {{end}} {{end}} {{if not .Socials }} None {{end}}
                     </div>
                     {{if .IsUser}}
-                    <a href="/profile/ch/s">Change</a> {{end}}
+                    <a href="/profile/ch/{{.ID}}">Change</a> {{end}}
 
                     <address>
                             <span><i class="fas fa-university"></i></span>
                             <p>{{if .IsStudent}} University: {{else}} Company: {{end}} {{.University}}</p>
                         </address> {{if .IsUser}}
-                    <a href="/profile/ch/u">Change</a> {{end}}
+                    <a href="/profile/settings/i">Change</a> {{end}}
 
                     <div class="contact">
                         {{if .IsUser}}
@@ -93,18 +93,6 @@
                         {{if .IsStudent}}
                         <div class="web-card card">
                             <div class="card-icon">
-                                <span><i class="fa fa-book-medical"></i></span>
-                            </div>
-                            <div class="card-info">
-                                <h3>Мед.Карта</h3>
-                                <p>Сведения о Вашем здоровье</p>
-                            </div>
-                            {{if .IsUser}}
-                            <a href="/profile/settings/m" class="go">Go!</a> {{else}}
-                            <a href="/user/settings" class="go">Go!</a> {{end}}
-                        </div>
-                        <div class="web-card card">
-                            <div class="card-icon">
                                 <span><i class="fas fa-user"></i></span>
                             </div>
                             <div class="card-info">
@@ -113,7 +101,19 @@
                             </div>
                             {{if .IsUser}}
                             <a href="/profile/settings/i" class="go">Go!</a> {{else}}
-                            <a href="/user/settings" class="go">Go!</a> {{end}}
+                            <a href="/user/settings/i/{{.ID}}" class="go">Go!</a> {{end}}
+                        </div>
+                        <div class="web-card card">
+                            <div class="card-icon">
+                                <span><i class="fa fa-book-medical"></i></span>
+                            </div>
+                            <div class="card-info">
+                                <h3>Мед.Карта</h3>
+                                <p>Сведения о Вашем здоровье</p>
+                            </div>
+                            {{if .IsUser}}
+                            <a href="/profile/settings/m" class="go">Go!</a> {{else}}
+                            <a href="/user/settings/m/{{.ID}}" class="go">Go!</a> {{end}}
                         </div>
                         <div class="web-card card">
                             <div class="card-icon">
@@ -125,7 +125,31 @@
                             </div>
                             {{if .IsUser}}
                             <a href="/profile/settings/a" class="go">Go!</a> {{else}}
-                            <a href="/user/settings" class="go">Go!</a> {{end}}
+                            <a href="/user/settings/a/{{.ID}}" class="go">Go!</a> {{end}}
+                        </div>
+                        <div class="web-card card">
+                            <div class="card-icon">
+                                <span><i class="fas fa-stamp"></i></span>
+                            </div>
+                            <div class="card-info">
+                                <h3>Сертификаты</h3>
+                                <p>Твои достижения, но на бумаге)</p>
+                            </div>
+                            {{if .IsUser}}
+                            <a href="/profile/settings/s" class="go">Go!</a> {{else}}
+                            <a href="/user/settings/s/{{.ID}}" class="go">Go!</a> {{end}}
+                        </div>
+                        <div class="web-card card">
+                            <div class="card-icon">
+                                <span><i class="far fa-file"></i></span>
+                            </div>
+                            <div class="card-info">
+                                <h3>Резюме</h3>
+                                <p>Где работал, Навыки</p>
+                            </div>
+                            {{if .IsUser}}
+                            <a href="/profile/settings/r" class="go">Go!</a> {{else}}
+                            <a href="/user/settings/r/{{.ID}}" class="go">Go!</a> {{end}}
                         </div>
                         {{if .IsUser}}
                         <div class="web-card card">
@@ -140,16 +164,6 @@
 
                             <a href="/filter" class="go">Go!</a>
                         </div>
-                        <div class="web-card card">
-                            <div class="card-icon">
-                                <span><i class="fas fa-cogs"></i></span>
-                            </div>
-                            <div class="card-info">
-                                <h3>Настройки</h3>
-                                <p>Настройки Профиля</p>
-                            </div>
-                            <a href="/profile/settings/s" class="go">Go!</a>
-                        </div>
                         {{end}} {{else}}
                         <div class="web-card card">
                             <div class="card-icon">
@@ -160,16 +174,6 @@
                                 <p>Персональные Данные и Автобиография</p>
                             </div>
                             <a href="/profile/settings/i" class="go">Go!</a>
-                        </div>
-                        <div class="web-card card">
-                            <div class="card-icon">
-                                <span><i class="fas fa-cogs"></i></span>
-                            </div>
-                            <div class="card-info">
-                                <h3>Настройки</h3>
-                                <p>Настройки Профиля</p>
-                            </div>
-                            <a href="/profile/settings/s" class="go">Go!</a>
                         </div>
                         {{end}}
                     </div>

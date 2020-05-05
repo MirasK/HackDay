@@ -30,15 +30,6 @@ func createWork(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-// check if msg is exist
-func respCheckIsEx(ownerID, senderID primitive.ObjectID) bool {
-	res, _ := db.GetOneByFilter(db.GetMsgsColl(), bson.M{"ownerId": ownerID, "senderId": senderID})
-	if res != nil {
-		return true
-	}
-	return false
-}
-
 // response to one work
 func response(w http.ResponseWriter, r *http.Request) (string, error) {
 	text := r.FormValue("text")
@@ -79,7 +70,7 @@ func response(w http.ResponseWriter, r *http.Request) (string, error) {
 	if typeOfMsg == "to employer" {
 		_, e = db.Create(db.GetMsgsColl(), bson.M{"type": typeOfMsg, "status": status, "text": text, "ownerId": owner, "senderId": ID})
 	} else {
-		e = db.Update(db.GetMsgsColl(), bson.D{{Key: "$or", Value: bson.A{bson.M{"senderId": owner}, bson.M{"ownerId": owner}}}},
+		e = db.Update(db.GetMsgsColl(), bson.D{{Key: "$or", Value: bson.A{bson.M{"senderId": ID}, bson.M{"ownerId": ID}}}},
 			bson.D{{Key: "$set", Value: bson.M{"status": status, "type": typeOfMsg, "text": text, "ownerId": owner, "senderId": ID}}})
 	}
 

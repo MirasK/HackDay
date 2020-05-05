@@ -11,95 +11,114 @@
 </head>
 
 <body>
-
+    <div class="tab">{{.Tab}}</div>
     <div class="container">
         <div class="leftbox">
             <nav>
+                {{if .IsStudent}}
                 <a onclick="tabs(0)" class="tab"><i class="fa fa-user"></i></a>
-                <a onclick="tabs(1)" class="tab"><i class="fa fa-book-medical"></i></a>
-                <a onclick="tabs(2)" class="tab"><i class="fa fa-trophy"></i></a>
-                <a onclick="tabs(3)" class="tab"><i class="fa fa-tasks"></i></a>
-                <a onclick="tabs(4)" class="tab"><i class="fa fa-cog"></i></a>
+                <a onclick="tabs(2)" class="tab"><i class="fas fa-trophy"></i></a>
+                <a onclick="tabs(3)" class="tab"><i class="fas fa-stamp"></i></a>
+                <a onclick="tabs(4)" class="tab"><i class="far fa-file"></i></a>
+                <a onclick="tabs(1)" class="tab"><i class="fas fa-book-medical"></i></a>{{if .IsUser}}
+                <a onclick="tabs(5)" class="tab"><i class="fas fa-users-cog"></i></a>{{end}} {{else}}
+                <a onclick="tabs(0)" class="tab"><i class="fas fa-user"></i></a>{{if .IsUser}}
+                <a onclick="tabs(1)" class="tab"><i class="fas fa-users-cog"></i></a>{{end}} {{end}}
             </nav>
         </div>
         <div class="rightbox">
             <div class="profile tabShow">
-                <form class="form" action="/profile/settings/personal" method="POST">
+                <form class="form" action="/profile/settings/i/{{.User.ID}}" method="POST">
                     <h1>Общая Информация</h1>
                     <h2>ФИО</h2>
-                    <input type="text" class="input" value="Name Surname">
+                    <input type="text" name="username" class="input" value="{{.User.Username}}">
                     <h2>Дата Рождения</h2>
-                    <input type="text" class="input" value="Birthday">
-                    <h2>Знание Языков</h2>
-                    <input type="text" class="input" value="Languages">
-                    <h2>Специальность</h2>
-                    <input type="text" class="input" value="Speciality">
-                    <h2>Университет</h2>
-                    <input type="text" class="input" value="University">
+                    <input type="datetime" name="dob" class="input" value="{{.User.DOB}}">
+                    <h2>{{if .IsStudent}}Университет{{else}}Компания{{end}}</h2>
+                    <input type="text" name="appertain" class="input" value="{{.User.Appertain}}">
+                    <h2>Пол</h2>
+                    <input type="text" name="gender" class="input" value="{{.User.Gender}}">
+                    <h2>Телефон</h2>
+                    <input type="text" name="phone" class="phone input" value="{{.User.Phone}}"> {{if .IsUser}}
                     <input type="submit" value="Update" class="btn" />
-                    <a href="/profile" class="button">Profile</a>
+                    <a href="/profile" class="button">Profile</a> {{end}}
                 </form>
             </div>
-            <div class="payment tabShow">
-                <form class="form" action="/profile/settings/payment" method="POST">
+            {{if .IsStudent}}
+            <div class="med tabShow">
+                <form class="form" action="/profile/settings/m/{{.MedCard.ID}}" method="POST">
                     <h1>Медицинская Карта</h1>
                     <h2>Группа Крови</h2>
-                    <input type="text" class="input" value="Blood">
-                    <h2>Аллергии</h2>
-                    <input type="text" class="input" value="Allergy">
-                    <h2>Психические отклонения</h2>
-                    <input type="text" class="input" value="Psycho">
-                    <h2>Хронические Заболевания</h2>
-                    <input type="text" class="input" value="Ill">
+                    <input type="text" name="blood" class="input" value="{{.MedCard.BloodGroup}}">
+                    <h2>Аллергии(если неск, пишите через запятую)</h2>
+                    <input type="text" name="allergs" class="input" value="{{range $i, $v := .MedCard.Allergs}}{{$v}},{{end}}">
+                    <h2>Болезни(если неск, пишите через запятую)</h2>
+                    <input type="text" name="ills" class="input" value="{{range $i, $v := .MedCard.Ills}}{{$v}},{{end}}">
+                    <h2>Психические отклонения(если неск, пишите через запятую)</h2>
+                    <input type="text" name="phychs" class="input" value="{{range $i, $v := .MedCard.Phychs}}{{$v}},{{end}}">
+                    <h2>Хронические Заболевания(если неск, пишите через запятую)</h2>
+                    <input type="text" name="chrons" class="input" value="{{range $i, $v := .MedCard.Chrons}}{{$v}},{{end}}">
                     <h2>Инвалидность</h2>
-                    <input type="password" class="input" value="Invalidity">
+                    <input type="text" name="inval" class="input" value="{{.MedCard.Invalid}}"> {{if .IsUser}}
                     <input type="submit" value="Update" class="btn" />
-                    <a href="/profile" class="button">Profile</a>
+                    <a href="/profile" class="button">Profile</a> {{end}}
                 </form>
             </div>
-            <div class="subscription tabShow">
-                <form class="form" action="/profile/settings/subscription" method="POST">
-                    <h1>Достижения</h1>
-                    <h2>Достижение 1</h2>
-                    <input type="text" class="input" value="Achievement">
-                    <h2>Достижение 2</h2>
-                    <input type="text" class="input" value="Achievement">
-                    <h2>Достижение 3</h2>
-                    <input type="text" class="input" value="Achievement">
-                    <h2>Достижение 4</h2>
-                    <input type="text" class="input" value="Achievement">
+            <div class="achievs tabShow">
+                <form class="form" action="/profile/settings/a/{{.StudentInfo.ID}}" method="POST">
+                    <h1>Достижения(если неск, пишите через запятую)</h1>
+                    <input type="text" name="achievs" class="input" value="{{range $i, $v := .StudentInfo.Achievs}}{{$v}},{{end}}"> {{if .IsUser}}
                     <input type="submit" value="Update" class="btn" />
-                    <a href="/profile" class="button">Profile</a>
+                    <a href="/profile" class="button">Profile</a> {{end}}
                 </form>
             </div>
-            <div class="privacy tabShow">
-                <form class="form" action="/profile/settings/privacy" method="POST">
-                    <h1>Стажировки\Вакансии</h1>
-                    <h2>Стажировка 1</h2>
-                    <p></p>
-                    <h2>Стажировка 2</h2>
-                    <p></p>
-                    <h2>Стажировка 3</h2>
-                    <p></p>
-                    <h2>Стажировка 4</h2>
-                    <p></p>
-                    <h2>Стажировка 5</h2>
-                    <p></p>
+            <div class="sertificates tabShow">
+                <form class="form" action="/profile/settings/s/{{.StudentInfo.ID}}" method="POST" enctype="multipart/form-data">
+                    <h1>Сертификаты</h1>
+                    {{range $i, $v := .StudentInfo.Sertificates}}
+                    <div class="sertificate sertificate-{{$i}}">
+                        {{if ne $v "None"}}
+                        <img src="/{{$v}}" alt="sertificate"> {{end}}
+                    </div>
+                    {{end}} {{if .IsUser}}
+                    <h2>Загрузить сертификат</h2>
+                    <input type="file" name="sertificate" class="input" value="Загрузить" accept=".jpg, .jpeg, .png">
                     <input type="submit" value="Update" class="btn" />
-                    <a href="/profile" class="button">Profile</a>
+                    <a href="/profile" class="button">Profile</a> {{end}}
                 </form>
             </div>
+            <div class="resumes tabShow">
+                <form class="form" action="/profile/settings/r/{{.Resume.ID}}" method="POST">
+                    <h1>Резюме</h1>
+                    <h1>Скиллы(если неск, пишите через запятую)</h1>
+                    <input type="text" name="skills" class="input" value="{{range $i, $v := .Resume.Skills}}{{$v}},{{end}}">
+                    <h1>Где работал(если неск, пишите через запятую)</h1>
+                    <input type="text" name="where" class="input" value="{{range $i, $v := .Resume.WhereWorks}}{{$v}},{{end}}">
+                    <h2>О себе</h2>
+                    <input type="text" name="about" class="input" value="{{.Resume.AboutMe}}">
+                    <h2>Дата обновления резюме</h2>
+                    <input type="text" name="date" disabled class="input" value="{{.Resume.Date}}">
+                    <h2>Документ резюме</h2>
+                    {{if ne .Resume.Link "None"}}
+                    <a download href="/{{.Resume.Link}}">Скачать</a>{{end}}{{if .IsUser}}
+                    <input type="file" name="link" class="input" value="Загрузить">
+                    <input type="submit" value="Update" class="btn" />
+                    <a href="/profile" class="button">Profile</a> {{end}}
+                </form>
+            </div>
+            {{end}} {{if .IsUser}}
             <div class="settings tabShow">
-                <form class="form" action="/profile/settings/account" method="POST">
+                <form class="form" action="/profile/settings/acc/{{.User.ID}}" method="POST">
                     <h1>Настройки Профиля</h1>
                     <h2>Email</h2>
-                    <input type="email" class="input" value="emial@gmail.com">
+                    <input type="email" name="email" class="input" value="{{.User.Email}}">
                     <h2>Смена Пароля</h2>
-                    <input type="password" class="input" value="passsword">
+                    <input type="password" name="password" class="input" placeholder="password">
                     <input type="submit" value="Update" class="btn" />
                     <a href="/profile" class="button">Profile</a>
                 </form>
             </div>
+            {{end}}
         </div>
     </div>
     <script src="/static/js/settings.js"></script>
