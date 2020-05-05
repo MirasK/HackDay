@@ -1,2 +1,3 @@
-2020-05-05 22:41:02| listening on: http://localhost:8080
-2020-05-05 22:41:07| template: profile.html:27:58: executing "profile.html" at <$i>: can't give argument to non-function $i
+2020-05-05 22:51:51| listening on: http://localhost:8080
+2020-05-05 22:51:55| template: change.html:30: unexpected {{end}}
+2020-05-05 22:53:13| template: change.html:39: unexpected EOF
