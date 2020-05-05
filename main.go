@@ -29,7 +29,7 @@ func routes() *http.ServeMux {
 	mux.HandleFunc("/logout", app.Hlogout)                // 100%
 	mux.HandleFunc("/profile", app.Hprofile)              // 100%
 	mux.HandleFunc("/profile/settings/", app.Hsettings)   // 100%
-	mux.HandleFunc("/profile/ch/", app.HphotoAndSocials)  // 0%
+	mux.HandleFunc("/profile/ch/", app.HphotoAndSocials)  // 100%
 	mux.HandleFunc("/profile/my-vacantions", app.Hworks)  // 100%
 	mux.HandleFunc("/profile/my-vacantions/", app.Hwork)  // 100%
 	mux.HandleFunc("/profile/my-subscription", app.Hsubs) // 100%
